@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChiRAJ - Cermat Hitung Rezeki Amanah Jaya</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #1b5e20;
+            --secondary-color: #4caf50;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .stat-card.income {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .stat-card.expense {
+            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+        }
+        
+        .stat-card.balance {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-2px);
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        }
+        
+        .table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .table thead {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .badge-status {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+        }
+        
+        .badge-open {
+            background: #ff6f00;
+            color: white;
+        }
+        
+        .badge-solved {
+            background: #00c853;
+            color: white;
+        }
+        
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 450px;
+            width: 90%;
+        }
+        
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        
+        .logo-container img {
+            max-width: 150px;
+            height: auto;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1055;
+        }
+        
+        .brand-small {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        .table td {
+            vertical-align: middle;
+        }
+        
+        .text-success {
+            color: #00c853 !important;
+            font-weight: 600;
+        }
+        
+        .text-danger {
+            color: #ff5252 !important;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN PAGE -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="text-center mb-4">
+                <div class="logo-container">
+                    <img src="logo.png" alt="ChiRAJ Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzRjYWY1MCIvPjx0ZXh0IHg9IjUwIiB5PSI2MCIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4='">
+                </div>
+                <h2 class="fw-bold text-success mb-2">ChiRAJ</h2>
+                <p class="text-muted mb-1">Cermat Hitung Rezeki Amanah Jaya</p>
+                <p class="text-muted small">CV REZEKI AMANAH JAYA Group</p>
+                <p class="text-muted small fst-italic">Supplier & Waste Solution Partner</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="loginEmail" required placeholder="email@example.com">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                </button>
+            </form>
+            
+            <div class="text-center mt-3">
+                <small class="text-muted">Belum punya akun? <a href="#" id="showRegister">Daftar</a></small>
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTER PAGE -->
+    <div id="registerPage" class="login-container hidden">
+        <div class="login-box">
+            <div class="text-center mb-4">
+                <div class="logo-container">
+                    <img src="logo.png" alt="ChiRAJ Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzRjYWY1MCIvPjx0ZXh0IHg9IjUwIiB5PSI2MCIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4='">
+                </div>
+                <h2 class="fw-bold text-success mb-2">ChiRAJ</h2>
+                <p class="text-muted mb-1">Cermat Hitung Rezeki Amanah Jaya</p>
+                <p class="text-muted small">CV REZEKI AMANAH JAYA Group</p>
+            </div>
+            
+            <form id="registerForm">
+                <div class="mb-3">
+                    <label class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="registerName" required placeholder="Nama Lengkap">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" id="registerEmail" required placeholder="email@example.com">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="registerPassword" required placeholder="Minimal 6 karakter" minlength="6">
+                </div>
+                <button type="submit" class="btn btn-success w-100 py-2">
+                    <i class="fas fa-user-plus me-2"></i>Daftar
+                </button>
+            </form>
+            
+            <div class="text-center mt-3">
+                <small class="text-muted">Sudah punya akun? <a href="#" id="showLogin">Login</a></small>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="dashboardPage" class="hidden">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="logo.png" alt="ChiRAJ Logo" width="45" height="45" class="me-2 rounded" onerror="this.style.display='none'">
+                    <div>
+                        <div class="fw-bold">ChiRAJ</div>
+                        <small class="brand-small">Cermat Hitung RAJ</small>
+                    </div>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <span class="nav-link text-white">
+                                <i class="fas fa-user me-2"></i><span id="userName">User</span>
+                            </span>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container py-4">
+            <!-- Statistics Cards -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card income">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Total Pemasukan</h6>
+                                <h2 class="mb-0" id="totalIncome">Rp 0</h2>
+                            </div>
+                            <i class="fas fa-arrow-down fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card expense">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Total Pengeluaran</h6>
+                                <h2 class="mb-0" id="totalExpense">Rp 0</h2>
+                            </div>
+                            <i class="fas fa-arrow-up fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card balance">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Saldo Saat Ini</h6>
+                                <h2 class="mb-0" id="currentBalance">Rp 0</h2>
+                            </div>
+                            <i class="fas fa-wallet fa-3x opacity-50"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart & Form Row -->
+            <div class="row mb-4">
+                <!-- Chart -->
+                <div class="col-lg-8 mb-3">
+                    <div class="card p-3">
+                        <h5 class="card-title mb-3">
+                            <i class="fas fa-chart-line me-2 text-primary"></i>Grafik Keuangan
+                        </h5>
+                        <canvas id="financeChart" height="120"></canvas>
+                    </div>
+                </div>
+
+                <!-- Input Form -->
+                <div class="col-lg-4 mb-3">
+                    <div class="card p-3">
+                        <h5 class="card-title mb-3">
+                            <i class="fas fa-plus-circle me-2 text-success"></i>Tambah Transaksi
+                        </h5>
+                        <form id="transactionForm">
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal</label>
+                                <input type="date" class="form-control" id="tanggal" required>
+                            </div>
+                            
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <label class="form-label">Pemasukan</label>
+                                    <input type="number" class="form-control" id="income" placeholder="0" value="0">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">Pengeluaran</label>
+                                    <input type="number" class="form-control" id="outcome" placeholder="0" value="0">
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Uraian</label>
+                                <textarea class="form-control" id="uraian" rows="2" required placeholder="Keterangan transaksi"></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">PIC</label>
+                                <select class="form-select" id="pic" required>
+                                    <option value="">Pilih PIC</option>
+                                    <option value="Sidik">Sidik</option>
+                                    <option value="Adit">Adit</option>
+                                    <option value="Palung">Palung</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="status" required>
+                                    <option value="Open">Open</option>
+                                    <option value="Solved">Solved</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-save me-2"></i>Simpan Transaksi
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transactions Table -->
+            <div class="card p-3">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-list me-2 text-primary"></i>Riwayat Transaksi
+                    </h5>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-success" onclick="filterStatus('all')">Semua</button>
+                        <button class="btn btn-sm btn-outline-warning" onclick="filterStatus('Open')">Open</button>
+                        <button class="btn btn-sm btn-outline-success" onclick="filterStatus('Solved')">Solved</button>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Tanggal</th>
+                                <th>Uraian</th>
+                                <th>Pemasukan</th>
+                                <th>Pengeluaran</th>
+                                <th>Saldo</th>
+                                <th>PIC</th>
+                                <th>Status</th>
+                                <th>Input Oleh</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTable">
+                            <tr>
+                                <td colspan="9" class="text-center text-muted">
+                                    <div class="spinner-border spinner-border-sm me-2"></div>
+                                    Memuat data...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <script>
+        // ==========================================
+        // KONFIGURASI FIREBASE ANDA
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBaQNvh43SU9IqX9WhyVwXHE8UPEqSCaSA",
+            authDomain: "chiraj-13c38.firebaseapp.com",
+            projectId: "chiraj-13c38",
+            storageBucket: "chiraj-13c38.firebasestorage.app",
+            messagingSenderId: "724947606266",
+            appId: "1:724947606266:web:99e26be10348a8ad2ec743",
+            measurementId: "G-ZZK2BFMJT7"
+        };
+
+        // ==========================================
+        // URL GOOGLE APPS SCRIPT
+        // ==========================================
+        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKrGnwNqngv5vYbrjbLPgjkuunONfin1U2fqSP3Dm4IXqf7_JdXd_4TxLx1XR7x3i2Uw/exec";
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Global variables
+        let currentUser = null;
+        let financeChart = null;
+        let allTransactions = [];
+
+        // ==========================================
+        // AUTHENTICATION
+        // ==========================================
+        
+        // Check auth state
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginPage').classList.add('hidden');
+                document.getElementById('registerPage').classList.add('hidden');
+                document.getElementById('dashboardPage').classList.remove('hidden');
+                document.getElementById('userName').textContent = user.displayName || user.email;
+                loadAllData();
+            } else {
+                currentUser = null;
+                document.getElementById('loginPage').classList.remove('hidden');
+                document.getElementById('registerPage').classList.add('hidden');
+                document.getElementById('dashboardPage').classList.add('hidden');
+            }
+        });
+
+        // Login form
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showToast('Login berhasil!', 'success');
+            } catch (error) {
+                showToast('Login gagal: ' + error.message, 'error');
+            }
+        });
+
+        // Register form
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                await userCredential.user.updateProfile({ displayName: name });
+                showToast('Registrasi berhasil! Silakan login.', 'success');
+                document.getElementById('showLogin').click();
+            } catch (error) {
+                showToast('Registrasi gagal: ' + error.message, 'error');
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            auth.signOut();
+            showToast('Logout berhasil', 'info');
+        });
+
+        // Toggle login/register
+        document.getElementById('showRegister').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('registerPage').classList.remove('hidden');
+        });
+
+        document.getElementById('showLogin').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('registerPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+        });
+
+        // ==========================================
+        // LOAD DATA - UTAMAKAN GOOGLE SHEETS
+        // ==========================================
+
+        async function loadAllData() {
+            try {
+                // 1. Load dari Google Sheets terlebih dahulu (data existing)
+                showToast('Memuat data dari spreadsheet...', 'info');
+                const sheetResponse = await fetch(APPS_SCRIPT_URL + '?sheet=Keuangan');
+                const sheetData = await sheetResponse.json();
+                
+                console.log('Data dari Sheets:', sheetData);
+                
+                // 2. Convert data dari Sheets ke format yang sesuai
+                allTransactions = sheetData.map((row, index) => {
+                    // Parse angka dari format spreadsheet (Rp5.000.000 atau 5000000)
+                    const parseAmount = (value) => {
+                        if (!value || value === '-' || value === '') return 0;
+                        let str = value.toString().replace(/Rp\s?/g, '').replace(/\./g, '').replace(/,/g, '.');
+                        const num = parseFloat(str);
+                        return isNaN(num) ? 0 : num;
+                    };
+                    
+                    return {
+                        id: 'sheet_' + index,
+                        type: 'keuangan',
+                        no: row.No || row['No'] || (index + 1),
+                        tanggal: row.Tanggal || row['Tanggal'] || '-',
+                        income: parseAmount(row.Income) || parseAmount(row['Income']) || 0,
+                        outcome: parseAmount(row.Outcome) || parseAmount(row['Outcome']) || 0,
+                        uraian: row.Uraian || row['Uraian'] || '-',
+                        pic: row.PIC || row['PIC'] || '-',
+                        status: (row.Status || row['Status'] || 'Open').toString().toLowerCase() === 'solved' ? 'Solved' : 'Open',
+                        saldo: parseAmount(row.Saldo) || parseAmount(row['Saldo']) || 0,
+                        createdByName: row['Dibuat Oleh'] || row.createdByName || '-',
+                        createdByEmail: row['Email User'] || row.createdByEmail || '-',
+                        fromSheet: true
+                    };
+                });
+                
+                // 3. Update UI dengan data dari Sheets
+                updateUI();
+                
+                if (allTransactions.length > 0) {
+                    showToast('Berhasil memuat ' + allTransactions.length + ' transaksi', 'success');
+                } else {
+                    showToast('Belum ada data transaksi', 'info');
+                }
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showToast('Gagal memuat data: ' + error.message, 'error');
+            }
+        }
+
+        // ==========================================
+        // TRANSACTION MANAGEMENT
+        // ==========================================
+
+        // Submit transaction
+        document.getElementById('transactionForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="loading"></span> Menyimpan...';
+            btn.disabled = true;
+
+            try {
+                const income = parseFloat(document.getElementById('income').value) || 0;
+                const outcome = parseFloat(document.getElementById('outcome').value) || 0;
+                
+                const data = {
+                    type: 'keuangan',
+                    tanggal: document.getElementById('tanggal').value,
+                    income: income,
+                    outcome: outcome,
+                    uraian: document.getElementById('uraian').value,
+                    pic: document.getElementById('pic').value,
+                    status: document.getElementById('status').value,
+                    createdByName: currentUser.displayName || 'User',
+                    createdByEmail: currentUser.email
+                };
+
+                // Save to Firestore
+                await db.collection('transaksi').add({
+                    ...data,
+                    timestamp: new Date().toISOString(),
+                    createdBy: currentUser.uid
+                });
+
+                // Sync to Google Sheets
+                await fetch(APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                showToast('Transaksi berhasil disimpan!', 'success');
+                document.getElementById('transactionForm').reset();
+                document.getElementById('tanggal').valueAsDate = new Date();
+                
+                // Reload data untuk menampilkan data terbaru
+                await loadAllData();
+                
+            } catch (error) {
+                showToast('Gagal menyimpan: ' + error.message, 'error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Update UI (Table, Stats, Chart)
+        function updateUI() {
+            updateStats();
+            updateTable();
+            updateChart();
+        }
+
+        // Update statistics
+        function updateStats() {
+            const totalIncome = allTransactions.reduce((sum, t) => sum + (t.income || 0), 0);
+            const totalExpense = allTransactions.reduce((sum, t) => sum + (t.outcome || 0), 0);
+            const balance = totalIncome - totalExpense;
+
+            document.getElementById('totalIncome').textContent = formatRupiah(totalIncome);
+            document.getElementById('totalExpense').textContent = formatRupiah(totalExpense);
+            document.getElementById('currentBalance').textContent = formatRupiah(balance);
+        }
+
+        // Update table
+        function updateTable(filteredData = null) {
+            const data = filteredData || allTransactions;
+            const tbody = document.getElementById('transactionTable');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Belum ada transaksi</td></tr>';
+                return;
+            }
+
+            // Sort by tanggal (oldest first untuk running balance yang benar)
+            const sortedData = [...data].sort((a, b) => {
+                const dateA = new Date(a.tanggal || '1970-01-01');
+                const dateB = new Date(b.tanggal || '1970-01-01');
+                return dateA - dateB;
+            });
+            
+            let saldo = 0;
+            tbody.innerHTML = sortedData.map((t, index) => {
+                saldo = saldo + (t.income || 0) - (t.outcome || 0);
+                const statusClass = t.status === 'Open' ? 'badge-open' : 'badge-solved';
+                const statusText = t.status || 'Open';
+                
+                return `
+                    <tr>
+                        <td>${t.no || (index + 1)}</td>
+                        <td>${formatDate(t.tanggal)}</td>
+                        <td>${t.uraian}</td>
+                        <td class="text-success">${t.income ? formatRupiah(t.income) : '-'}</td>
+                        <td class="text-danger">${t.outcome ? formatRupiah(t.outcome) : '-'}</td>
+                        <td class="fw-bold">${formatRupiah(saldo)}</td>
+                        <td>${t.pic || '-'}</td>
+                        <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+                        <td><small>${t.createdByName || '-'}</small></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Update chart
+        function updateChart() {
+            const ctx = document.getElementById('financeChart').getContext('2d');
+            
+            // Group by month
+            const monthlyData = {};
+            allTransactions.forEach(t => {
+                const month = t.tanggal ? t.tanggal.substring(0, 7) : 'Unknown';
+                if (!monthlyData[month]) {
+                    monthlyData[month] = { income: 0, expense: 0 };
+                }
+                monthlyData[month].income += t.income || 0;
+                monthlyData[month].expense += t.outcome || 0;
+            });
+
+            const labels = Object.keys(monthlyData).sort();
+            const incomeData = labels.map(m => monthlyData[m].income);
+            const expenseData = labels.map(m => monthlyData[m].expense);
+
+            if (financeChart) {
+                financeChart.destroy();
+            }
+
+            financeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels.length > 0 ? labels : ['Belum ada data'],
+                    datasets: [
+                        {
+                            label: 'Pemasukan',
+                            data: incomeData.length > 0 ? incomeData : [0],
+                            backgroundColor: 'rgba(76, 175, 80, 0.8)',
+                            borderColor: 'rgba(76, 175, 80, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Pengeluaran',
+                            data: expenseData.length > 0 ? expenseData : [0],
+                            backgroundColor: 'rgba(244, 67, 54, 0.8)',
+                            borderColor: 'rgba(244, 67, 54, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'Rp ' + value.toLocaleString('id-ID');
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': Rp ' + context.parsed.y.toLocaleString('id-ID');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Filter by status
+        function filterStatus(status) {
+            if (status === 'all') {
+                updateTable(allTransactions);
+            } else {
+                const filtered = allTransactions.filter(t => t.status === status);
+                updateTable(filtered);
+            }
+        }
+
+        // ==========================================
+        // UTILITY FUNCTIONS
+        // ==========================================
+
+        function formatRupiah(amount) {
+            return 'Rp ' + amount.toLocaleString('id-ID');
+        }
+
+        function formatDate(dateString) {
+            if (!dateString || dateString === '-') return '-';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('id-ID', { 
+                day: '2-digit', 
+                month: 'short', 
+                year: 'numeric' 
+            });
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toastId = 'toast' + Date.now();
+            
+            const bgClass = type === 'success' ? 'bg-success' : 
+                           type === 'error' ? 'bg-danger' : 'bg-info';
+            
+            const html = `
+                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">${message}</div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', html);
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            
+            toastElement.addEventListener('hidden.bs.toast', () => {
+                toastElement.remove();
+            });
+        }
+
+        // Set default date to today
+        document.getElementById('tanggal').valueAsDate = new Date();
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
