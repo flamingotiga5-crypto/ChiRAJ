@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChiRAJ - Cermat Hitung Rezeki Amanah Jaya</title>
     
+    <!-- Google Fonts - Inter untuk readability terbaik -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -16,34 +21,154 @@
         :root {
             --primary-color: #1b5e20;
             --secondary-color: #4caf50;
+            --accent-color: #ffd700;
+            --font-main: 'Inter', sans-serif;
+            --font-display: 'Plus Jakarta Sans', sans-serif;
+        }
+        
+        * {
+            font-family: var(--font-main);
         }
         
         body {
-            background-color: #f5f5f5;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            font-family: var(--font-main);
+            min-height: 100vh;
         }
         
+        /* ============================================
+           NAVBAR - PROPORTIONAL & AESTHETIC
+           ============================================ */
         .navbar {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #0d3320 0%, #1b5e20 50%, #2e7d32 100%);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 12px 0;
+            border-bottom: 3px solid var(--accent-color);
         }
         
-        .card {
-            border: none;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s;
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 5px 0;
         }
         
-        .card:hover {
-            transform: translateY(-5px);
+        .navbar-brand .logo-wrapper {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            flex-shrink: 0;
         }
         
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .navbar-brand .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 3px;
+        }
+        
+        .navbar-brand .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+        
+        .navbar-brand .brand-name {
+            font-size: 1.6rem;
+            font-weight: 800;
             color: white;
-            padding: 20px;
-            border-radius: 15px;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-family: var(--font-display);
+        }
+        
+        .navbar-brand .brand-tagline {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.85);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .navbar .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 8px 16px !important;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar .nav-link:hover {
+            background: rgba(255,255,255,0.15);
+            color: white !important;
+        }
+        
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .user-badge i {
+            color: var(--accent-color);
+        }
+        
+        .user-badge span {
+            color: white;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        /* ============================================
+           STAT CARDS - CLEAN & READABLE NUMBERS
+           ============================================ */
+        .stat-card {
+            color: white;
+            padding: 28px 25px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.3);
         }
         
         .stat-card.income {
@@ -58,77 +183,464 @@
             background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
         
-        .btn-primary {
+        .stat-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.95;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            letter-spacing: 0;
+            line-height: 1.2;
+            /* Angka yang mudah dibaca */
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .stat-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 4rem;
+            opacity: 0.2;
+        }
+        
+        /* ============================================
+           SECTION HEADERS
+           ============================================ */
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-main);
+        }
+        
+        .section-title i {
+            color: var(--primary-color);
+            font-size: 1.4rem;
+        }
+        
+        .section-badge {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
+        }
+        
+        .section-badge.warning {
+            background: linear-gradient(135deg, #ff9a56, #ff6f00);
+            box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
+        }
+        
+        /* ============================================
+           STATUS CARDS (OPEN/SOLVED)
+           ============================================ */
+        .status-card {
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+        }
+        
+        .status-card::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -30%;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .status-open {
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6f00 100%);
+        }
+        
+        .status-solved {
+            background: linear-gradient(135deg, #56ab2f 0%, #00c853 100%);
+        }
+        
+        .status-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .status-title i {
+            font-size: 2rem;
+            background: rgba(255,255,255,0.25);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .status-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .status-stat-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.2);
+            padding: 15px 18px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .status-stat-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-stat-label i {
+            font-size: 1.1rem;
+        }
+        
+        .status-stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            /* Angka mudah dibaca */
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0;
+        }
+        
+        .status-total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255,255,255,0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .status-total-label {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-total-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: var(--font-display);
+            /* Angka mudah dibaca */
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0;
+        }
+        
+        /* ============================================
+           PIC CARDS
+           ============================================ */
+        .pic-card {
+            border-radius: 20px;
+            padding: 22px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+        
+        .pic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+        }
+        
+        .pic-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        .pic-sidik { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .pic-adit { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .pic-palung { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .pic-other { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        
+        .pic-name {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .pic-photo {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.9);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: rgba(255,255,255,0.3);
+            flex-shrink: 0;
+        }
+        
+        .pic-name .pic-count-badge {
+            margin-left: auto;
+            background: rgba(255,255,255,0.95);
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .pic-stats {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .pic-stat-item {
+            flex: 1;
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .pic-stat-label {
+            font-size: 0.7rem;
+            opacity: 0.95;
+            margin-bottom: 6px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .pic-stat-value {
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: var(--font-display);
+            /* Angka mudah dibaca */
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0;
+        }
+        
+        /* ============================================
+           CARDS & TABLE
+           ============================================ */
+        .card {
             border: none;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            background: white;
         }
         
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            transform: translateY(-2px);
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.25);
+        .card-title {
+            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 1.15rem;
         }
         
         .table {
             background: white;
-            border-radius: 10px;
+            border-radius: 15px;
             overflow: hidden;
         }
         
         .table thead {
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
         }
         
+        .table thead th {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 15px 12px;
+            border: none;
+        }
+        
+        .table tbody td {
+            padding: 14px 12px;
+            vertical-align: middle;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
         .badge-status {
-            padding: 8px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.8rem;
             display: inline-block;
             min-width: 80px;
             text-align: center;
         }
         
         .badge-open {
-            background: #ff6f00;
+            background: linear-gradient(135deg, #ff9a56, #ff6f00);
             color: white;
         }
         
         .badge-solved {
-            background: #00c853;
+            background: linear-gradient(135deg, #56ab2f, #00c853);
             color: white;
         }
         
+        .text-success-custom {
+            color: #00c853 !important;
+            font-weight: 700;
+            font-family: var(--font-display);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .text-danger-custom {
+            color: #ff5252 !important;
+            font-weight: 700;
+            font-family: var(--font-display);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* ============================================
+           BUTTONS & FORMS
+           ============================================ */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border: none;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(27, 94, 32, 0.4);
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.2);
+        }
+        
+        .form-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        
+        /* ============================================
+           LOGIN PAGE
+           ============================================ */
         .login-container {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0d3320 0%, #1b5e20 50%, #2e7d32 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            border-radius: 50%;
         }
         
         .login-box {
             background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 45px 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             max-width: 450px;
             width: 90%;
-        }
-        
-        .logo-container {
-            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
         
         .logo-container img {
-            max-width: 150px;
+            max-width: 120px;
             height: auto;
         }
         
+        /* ============================================
+           UTILITIES
+           ============================================ */
         .hidden {
             display: none !important;
         }
@@ -159,18 +671,30 @@
             opacity: 0.9;
         }
         
-        .table td {
-            vertical-align: middle;
-        }
-        
-        .text-success {
-            color: #00c853 !important;
-            font-weight: 600;
-        }
-        
-        .text-danger {
-            color: #ff5252 !important;
-            font-weight: 600;
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 1.6rem;
+            }
+            
+            .navbar-brand .brand-name {
+                font-size: 1.3rem;
+            }
+            
+            .navbar-brand .logo-wrapper {
+                width: 45px;
+                height: 45px;
+            }
+            
+            .status-card, .pic-card {
+                padding: 20px;
+            }
+            
+            .status-total-value {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
@@ -183,9 +707,9 @@
                 <div class="logo-container">
                     <img src="logo.png" alt="ChiRAJ Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzRjYWY1MCIvPjx0ZXh0IHg9IjUwIiB5PSI2MCIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4='">
                 </div>
-                <h2 class="fw-bold text-success mb-2">ChiRAJ</h2>
-                <p class="text-muted mb-1">Cermat Hitung Rezeki Amanah Jaya</p>
-                <p class="text-muted small">CV REZEKI AMANAH JAYA Group</p>
+                <h2 class="fw-bold mb-2" style="color: white; font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 1px;">ChiRAJ</h2>
+                <p class="text-muted mb-1" style="font-weight: 500;">Cermat Hitung Rezeki Amanah Jaya</p>
+                <p class="text-muted small mb-1">CV REZEKI AMANAH JAYA Group</p>
                 <p class="text-muted small fst-italic">Supplier & Waste Solution Partner</p>
             </div>
             
@@ -204,7 +728,7 @@
             </form>
             
             <div class="text-center mt-3">
-                <small class="text-muted">Belum punya akun? <a href="#" id="showRegister">Daftar</a></small>
+                <small class="text-muted">Belum punya akun? <a href="#" id="showRegister" style="color: var(--primary-color); font-weight: 600;">Daftar</a></small>
             </div>
         </div>
     </div>
@@ -216,9 +740,8 @@
                 <div class="logo-container">
                     <img src="logo.png" alt="ChiRAJ Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzRjYWY1MCIvPjx0ZXh0IHg9IjUwIiB5PSI2MCIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4='">
                 </div>
-                <h2 class="fw-bold text-success mb-2">ChiRAJ</h2>
-                <p class="text-muted mb-1">Cermat Hitung Rezeki Amanah Jaya</p>
-                <p class="text-muted small">CV REZEKI AMANAH JAYA Group</p>
+                <h2 class="fw-bold mb-2" style="color: var(--primary-color); font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 1px;">ChiRAJ</h2>
+                <p class="text-muted mb-1" style="font-weight: 500;">Cermat Hitung Rezeki Amanah Jaya</p>
             </div>
             
             <form id="registerForm">
@@ -234,13 +757,13 @@
                     <label class="form-label">Password</label>
                     <input type="password" class="form-control" id="registerPassword" required placeholder="Minimal 6 karakter" minlength="6">
                 </div>
-                <button type="submit" class="btn btn-success w-100 py-2">
+                <button type="submit" class="btn btn-primary w-100 py-2">
                     <i class="fas fa-user-plus me-2"></i>Daftar
                 </button>
             </form>
             
             <div class="text-center mt-3">
-                <small class="text-muted">Sudah punya akun? <a href="#" id="showLogin">Login</a></small>
+                <small class="text-muted">Sudah punya akun? <a href="#" id="showLogin" style="color: var(--primary-color); font-weight: 600;">Login</a></small>
             </div>
         </div>
     </div>
@@ -250,22 +773,25 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="#">
-                    <img src="logo.png" alt="ChiRAJ Logo" width="45" height="45" class="me-2 rounded" onerror="this.style.display='none'">
-                    <div>
-                        <div class="fw-bold">ChiRAJ</div>
-                        <small class="brand-small">Cermat Hitung RAJ</small>
+                <a class="navbar-brand" href="#">
+                    <div class="logo-wrapper">
+                        <img src="logo.png" alt="ChiRAJ Logo" onerror="this.style.display='none'">
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">ChiRAJ</div>
+                        <div class="brand-tagline">Cermat Hitung RAJ</div>
                     </div>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
-                            <span class="nav-link text-white">
-                                <i class="fas fa-user me-2"></i><span id="userName">User</span>
-                            </span>
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item me-3">
+                            <div class="user-badge">
+                                <i class="fas fa-user-circle"></i>
+                                <span id="userName">User</span>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" id="logoutBtn">
@@ -282,34 +808,181 @@
             <div class="row mb-4">
                 <div class="col-md-4 mb-3">
                     <div class="stat-card income">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">Total Pemasukan</h6>
-                                <h2 class="mb-0" id="totalIncome">Rp 0</h2>
-                            </div>
-                            <i class="fas fa-arrow-down fa-3x opacity-50"></i>
-                        </div>
+                        <div class="stat-label">Total Pemasukan</div>
+                        <div class="stat-value" id="totalIncome">Rp 0</div>
+                        <i class="fas fa-arrow-down stat-icon"></i>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="stat-card expense">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">Total Pengeluaran</h6>
-                                <h2 class="mb-0" id="totalExpense">Rp 0</h2>
-                            </div>
-                            <i class="fas fa-arrow-up fa-3x opacity-50"></i>
-                        </div>
+                        <div class="stat-label">Total Pengeluaran</div>
+                        <div class="stat-value" id="totalExpense">Rp 0</div>
+                        <i class="fas fa-arrow-up stat-icon"></i>
                     </div>
                 </div>
                 <div class="col-md-4 mb-3">
                     <div class="stat-card balance">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="mb-1">Saldo Saat Ini</h6>
-                                <h2 class="mb-0" id="currentBalance">Rp 0</h2>
+                        <div class="stat-label">Saldo Saat Ini</div>
+                        <div class="stat-value" id="currentBalance">Rp 0</div>
+                        <i class="fas fa-wallet stat-icon"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Keuangan: Open vs Solved -->
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-exchange-alt"></i>
+                    Status Pencairan Dana
+                </div>
+                <div class="section-badge" id="totalTransactions">0 Transaksi</div>
+            </div>
+            
+            <div class="row mb-4">
+                <!-- Open Card -->
+                <div class="col-md-6 mb-3">
+                    <div class="status-card status-open">
+                        <div class="status-title">
+                            <i class="fas fa-clock"></i>
+                            <span>OPEN (Belum Cair)</span>
+                        </div>
+                        <div class="status-stats">
+                            <div class="status-stat-row">
+                                <div class="status-stat-label">
+                                    <i class="fas fa-arrow-down"></i> Pemasukan Belum Masuk
+                                </div>
+                                <div class="status-stat-value" id="open-income">Rp 0</div>
                             </div>
-                            <i class="fas fa-wallet fa-3x opacity-50"></i>
+                            <div class="status-stat-row">
+                                <div class="status-stat-label">
+                                    <i class="fas fa-arrow-up"></i> Pengeluaran Belum Diganti
+                                </div>
+                                <div class="status-stat-value" id="open-expense">Rp 0</div>
+                            </div>
+                        </div>
+                        <div class="status-total">
+                            <div class="status-total-label">
+                                <i class="fas fa-balance-scale"></i> Net Open
+                            </div>
+                            <div class="status-total-value" id="open-net">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Solved Card -->
+                <div class="col-md-6 mb-3">
+                    <div class="status-card status-solved">
+                        <div class="status-title">
+                            <i class="fas fa-check-circle"></i>
+                            <span>SOLVED (Sudah Cair)</span>
+                        </div>
+                        <div class="status-stats">
+                            <div class="status-stat-row">
+                                <div class="status-stat-label">
+                                    <i class="fas fa-arrow-down"></i> Pemasukan Sudah Masuk
+                                </div>
+                                <div class="status-stat-value" id="solved-income">Rp 0</div>
+                            </div>
+                            <div class="status-stat-row">
+                                <div class="status-stat-label">
+                                    <i class="fas fa-arrow-up"></i> Pengeluaran Sudah Diganti
+                                </div>
+                                <div class="status-stat-value" id="solved-expense">Rp 0</div>
+                            </div>
+                        </div>
+                        <div class="status-total">
+                            <div class="status-total-label">
+                                <i class="fas fa-balance-scale"></i> Net Solved
+                            </div>
+                            <div class="status-total-value" id="solved-net">Rp 0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Breakdown Open per PIC -->
+            <div class="section-header">
+                <div class="section-title">
+                    <i class="fas fa-users"></i>
+                    Detail Open per PIC
+                </div>
+                <div class="section-badge warning" id="open-count">0 Item Open</div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="pic-card pic-sidik">
+                        <div class="pic-name">
+                            <img src="pic-sidik.png" alt="Sidik" class="pic-photo" onerror="this.style.display='none'">
+                            <span>Sidik</span>
+                            <span class="pic-count-badge" id="sidik-open-count">0</span>
+                        </div>
+                        <div class="pic-stats">
+                            <div class="pic-stat-item">
+                                <div class="pic-stat-label">Pemasukan</div>
+                                <div class="pic-stat-value" id="pic-sidik-open-income">Rp 0</div>
+                            </div>
+                            <div class="pic-stat-item">
+                                <div class="pic-stat-label">Pengeluaran</div>
+                                <div class="pic-stat-value" id="pic-sidik-open-expense">Rp 0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="pic-card pic-adit">
+                        <div class="pic-name">
+                            <img src="pic-adit.png" alt="Adit" class="pic-photo" onerror="this.style.display='none'">
+                            <span>Adit</span>
+                            <span class="pic-count-badge" id="adit-open-count">0</span>
+                        </div>
+                        <div class="pic-stats">
+                            <div class="pic-stat-item">
+                                <div class="pic-stat-label">Pemasukan</div>
+                                <div class="pic-stat-value" id="pic-adit-open-income">Rp 0</div>
+                            </div>
+                            <div class="pic-stat-item">
+                                <div class="pic-stat-label">Pengeluaran</div>
+                                <div class="pic-stat-value" id="pic-adit-open-expense">Rp 0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="pic-card pic-palung">
+                        <div class="pic-name">
+                            <img src="pic-palung.png" alt="Palung" class="pic-photo" onerror="this.style.display='none'">
+                            <span>Palung</span>
+                            <span class="pic-count-badge" id="palung-open-count">0</span>
+                        </div>
+                        <div class="pic-stats">
+                            <div class="pic-stat-item">
+                                <div class="pic-stat-label">Pemasukan</div>
+                                <div class="pic-stat-value" id="pic-palung-open-income">Rp 0</div>
+                            </div>
+                            <div class="pic-stat-item">
+                                <div class="pic-stat-label">Pengeluaran</div>
+                                <div class="pic-stat-value" id="pic-palung-open-expense">Rp 0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-3">
+                    <div class="pic-card pic-other">
+                        <div class="pic-name">
+                            <img src="pic-other.png" alt="Lainnya" class="pic-photo" onerror="this.style.display='none'">
+                            <span>Lainnya</span>
+                            <span class="pic-count-badge" id="other-open-count">0</span>
+                        </div>
+                        <div class="pic-stats">
+                            <div class="pic-stat-item">
+                                <div class="pic-stat-label">Pemasukan</div>
+                                <div class="pic-stat-value" id="pic-other-open-income">Rp 0</div>
+                            </div>
+                            <div class="pic-stat-item">
+                                <div class="pic-stat-label">Pengeluaran</div>
+                                <div class="pic-stat-value" id="pic-other-open-expense">Rp 0</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -319,9 +992,9 @@
             <div class="row mb-4">
                 <!-- Chart -->
                 <div class="col-lg-8 mb-3">
-                    <div class="card p-3">
+                    <div class="card p-4">
                         <h5 class="card-title mb-3">
-                            <i class="fas fa-chart-line me-2 text-primary"></i>Grafik Keuangan
+                            <i class="fas fa-chart-line me-2" style="color: var(--primary-color);"></i>Grafik Keuangan
                         </h5>
                         <canvas id="financeChart" height="120"></canvas>
                     </div>
@@ -329,9 +1002,9 @@
 
                 <!-- Input Form -->
                 <div class="col-lg-4 mb-3">
-                    <div class="card p-3">
+                    <div class="card p-4">
                         <h5 class="card-title mb-3">
-                            <i class="fas fa-plus-circle me-2 text-success"></i>Tambah Transaksi
+                            <i class="fas fa-plus-circle me-2" style="color: var(--secondary-color);"></i>Tambah Transaksi
                         </h5>
                         <form id="transactionForm">
                             <div class="mb-3">
@@ -382,10 +1055,10 @@
             </div>
 
             <!-- Transactions Table -->
-            <div class="card p-3">
+            <div class="card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h5 class="card-title mb-0">
-                        <i class="fas fa-list me-2 text-primary"></i>Riwayat Transaksi
+                        <i class="fas fa-list me-2" style="color: var(--primary-color);"></i>Riwayat Transaksi
                     </h5>
                     <div class="btn-group">
                         <button class="btn btn-sm btn-outline-success" onclick="filterStatus('all')">Semua</button>
@@ -432,9 +1105,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // ==========================================
-        // KONFIGURASI FIREBASE ANDA
-        // ==========================================
         const firebaseConfig = {
             apiKey: "AIzaSyBaQNvh43SU9IqX9WhyVwXHE8UPEqSCaSA",
             authDomain: "chiraj-13c38.firebaseapp.com",
@@ -445,26 +1115,16 @@
             measurementId: "G-ZZK2BFMJT7"
         };
 
-        // ==========================================
-        // URL GOOGLE APPS SCRIPT
-        // ==========================================
         const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxKrGnwNqngv5vYbrjbLPgjkuunONfin1U2fqSP3Dm4IXqf7_JdXd_4TxLx1XR7x3i2Uw/exec";
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Global variables
         let currentUser = null;
         let financeChart = null;
         let allTransactions = [];
 
-        // ==========================================
-        // AUTHENTICATION
-        // ==========================================
-        
-        // Check auth state
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
@@ -481,7 +1141,6 @@
             }
         });
 
-        // Login form
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('loginEmail').value;
@@ -495,7 +1154,6 @@
             }
         });
 
-        // Register form
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('registerName').value;
@@ -512,13 +1170,11 @@
             }
         });
 
-        // Logout
         document.getElementById('logoutBtn').addEventListener('click', () => {
             auth.signOut();
             showToast('Logout berhasil', 'info');
         });
 
-        // Toggle login/register
         document.getElementById('showRegister').addEventListener('click', (e) => {
             e.preventDefault();
             document.getElementById('loginPage').classList.add('hidden');
@@ -531,22 +1187,15 @@
             document.getElementById('loginPage').classList.remove('hidden');
         });
 
-        // ==========================================
-        // LOAD DATA - UTAMAKAN GOOGLE SHEETS
-        // ==========================================
-
         async function loadAllData() {
             try {
-                // 1. Load dari Google Sheets terlebih dahulu (data existing)
                 showToast('Memuat data dari spreadsheet...', 'info');
                 const sheetResponse = await fetch(APPS_SCRIPT_URL + '?sheet=Keuangan');
                 const sheetData = await sheetResponse.json();
                 
                 console.log('Data dari Sheets:', sheetData);
                 
-                // 2. Convert data dari Sheets ke format yang sesuai
                 allTransactions = sheetData.map((row, index) => {
-                    // Parse angka dari format spreadsheet (Rp5.000.000 atau 5000000)
                     const parseAmount = (value) => {
                         if (!value || value === '-' || value === '') return 0;
                         let str = value.toString().replace(/Rp\s?/g, '').replace(/\./g, '').replace(/,/g, '.');
@@ -571,7 +1220,6 @@
                     };
                 });
                 
-                // 3. Update UI dengan data dari Sheets
                 updateUI();
                 
                 if (allTransactions.length > 0) {
@@ -586,11 +1234,6 @@
             }
         }
 
-        // ==========================================
-        // TRANSACTION MANAGEMENT
-        // ==========================================
-
-        // Submit transaction
         document.getElementById('transactionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -615,14 +1258,12 @@
                     createdByEmail: currentUser.email
                 };
 
-                // Save to Firestore
                 await db.collection('transaksi').add({
                     ...data,
                     timestamp: new Date().toISOString(),
                     createdBy: currentUser.uid
                 });
 
-                // Sync to Google Sheets
                 await fetch(APPS_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -634,7 +1275,6 @@
                 document.getElementById('transactionForm').reset();
                 document.getElementById('tanggal').valueAsDate = new Date();
                 
-                // Reload data untuk menampilkan data terbaru
                 await loadAllData();
                 
             } catch (error) {
@@ -645,14 +1285,14 @@
             }
         });
 
-        // Update UI (Table, Stats, Chart)
         function updateUI() {
             updateStats();
+            updateStatusBreakdown();
+            updateOpenPerPIC();
             updateTable();
             updateChart();
         }
 
-        // Update statistics
         function updateStats() {
             const totalIncome = allTransactions.reduce((sum, t) => sum + (t.income || 0), 0);
             const totalExpense = allTransactions.reduce((sum, t) => sum + (t.outcome || 0), 0);
@@ -661,9 +1301,88 @@
             document.getElementById('totalIncome').textContent = formatRupiah(totalIncome);
             document.getElementById('totalExpense').textContent = formatRupiah(totalExpense);
             document.getElementById('currentBalance').textContent = formatRupiah(balance);
+            document.getElementById('totalTransactions').textContent = allTransactions.length + ' Transaksi';
         }
 
-        // Update table
+        function updateStatusBreakdown() {
+            let openIncome = 0, openExpense = 0;
+            let solvedIncome = 0, solvedExpense = 0;
+            let openCount = 0, solvedCount = 0;
+
+            allTransactions.forEach(t => {
+                if (t.status === 'Open') {
+                    openIncome += t.income || 0;
+                    openExpense += t.outcome || 0;
+                    openCount++;
+                } else {
+                    solvedIncome += t.income || 0;
+                    solvedExpense += t.outcome || 0;
+                    solvedCount++;
+                }
+            });
+
+            document.getElementById('open-income').textContent = formatRupiah(openIncome);
+            document.getElementById('open-expense').textContent = formatRupiah(openExpense);
+            document.getElementById('open-net').textContent = formatRupiah(openIncome - openExpense);
+            
+            document.getElementById('solved-income').textContent = formatRupiah(solvedIncome);
+            document.getElementById('solved-expense').textContent = formatRupiah(solvedExpense);
+            document.getElementById('solved-net').textContent = formatRupiah(solvedIncome - solvedExpense);
+            
+            document.getElementById('open-count').textContent = openCount + ' Item Open';
+        }
+
+        function updateOpenPerPIC() {
+            const picTotals = {
+                'Sidik': { income: 0, expense: 0, count: 0 },
+                'Adit': { income: 0, expense: 0, count: 0 },
+                'Palung': { income: 0, expense: 0, count: 0 },
+                'Other': { income: 0, expense: 0, count: 0 }
+            };
+
+            const openTransactions = allTransactions.filter(t => t.status === 'Open');
+
+            openTransactions.forEach(t => {
+                const pic = (t.pic || '').toString().trim();
+                const income = t.income || 0;
+                const expense = t.outcome || 0;
+
+                if (pic.toLowerCase().includes('sidik')) {
+                    picTotals['Sidik'].income += income;
+                    picTotals['Sidik'].expense += expense;
+                    picTotals['Sidik'].count++;
+                } else if (pic.toLowerCase().includes('adit')) {
+                    picTotals['Adit'].income += income;
+                    picTotals['Adit'].expense += expense;
+                    picTotals['Adit'].count++;
+                } else if (pic.toLowerCase().includes('palung')) {
+                    picTotals['Palung'].income += income;
+                    picTotals['Palung'].expense += expense;
+                    picTotals['Palung'].count++;
+                } else if (pic && pic !== '-') {
+                    picTotals['Other'].income += income;
+                    picTotals['Other'].expense += expense;
+                    picTotals['Other'].count++;
+                }
+            });
+
+            document.getElementById('pic-sidik-open-income').textContent = formatRupiah(picTotals['Sidik'].income);
+            document.getElementById('pic-sidik-open-expense').textContent = formatRupiah(picTotals['Sidik'].expense);
+            document.getElementById('sidik-open-count').textContent = picTotals['Sidik'].count;
+            
+            document.getElementById('pic-adit-open-income').textContent = formatRupiah(picTotals['Adit'].income);
+            document.getElementById('pic-adit-open-expense').textContent = formatRupiah(picTotals['Adit'].expense);
+            document.getElementById('adit-open-count').textContent = picTotals['Adit'].count;
+            
+            document.getElementById('pic-palung-open-income').textContent = formatRupiah(picTotals['Palung'].income);
+            document.getElementById('pic-palung-open-expense').textContent = formatRupiah(picTotals['Palung'].expense);
+            document.getElementById('palung-open-count').textContent = picTotals['Palung'].count;
+            
+            document.getElementById('pic-other-open-income').textContent = formatRupiah(picTotals['Other'].income);
+            document.getElementById('pic-other-open-expense').textContent = formatRupiah(picTotals['Other'].expense);
+            document.getElementById('other-open-count').textContent = picTotals['Other'].count;
+        }
+
         function updateTable(filteredData = null) {
             const data = filteredData || allTransactions;
             const tbody = document.getElementById('transactionTable');
@@ -673,7 +1392,6 @@
                 return;
             }
 
-            // Sort by tanggal (oldest first untuk running balance yang benar)
             const sortedData = [...data].sort((a, b) => {
                 const dateA = new Date(a.tanggal || '1970-01-01');
                 const dateB = new Date(b.tanggal || '1970-01-01');
@@ -691,8 +1409,8 @@
                         <td>${t.no || (index + 1)}</td>
                         <td>${formatDate(t.tanggal)}</td>
                         <td>${t.uraian}</td>
-                        <td class="text-success">${t.income ? formatRupiah(t.income) : '-'}</td>
-                        <td class="text-danger">${t.outcome ? formatRupiah(t.outcome) : '-'}</td>
+                        <td class="text-success-custom">${t.income ? formatRupiah(t.income) : '-'}</td>
+                        <td class="text-danger-custom">${t.outcome ? formatRupiah(t.outcome) : '-'}</td>
                         <td class="fw-bold">${formatRupiah(saldo)}</td>
                         <td>${t.pic || '-'}</td>
                         <td><span class="badge-status ${statusClass}">${statusText}</span></td>
@@ -702,11 +1420,9 @@
             }).join('');
         }
 
-        // Update chart
         function updateChart() {
             const ctx = document.getElementById('financeChart').getContext('2d');
             
-            // Group by month
             const monthlyData = {};
             allTransactions.forEach(t => {
                 const month = t.tanggal ? t.tanggal.substring(0, 7) : 'Unknown';
@@ -735,14 +1451,16 @@
                             data: incomeData.length > 0 ? incomeData : [0],
                             backgroundColor: 'rgba(76, 175, 80, 0.8)',
                             borderColor: 'rgba(76, 175, 80, 1)',
-                            borderWidth: 1
+                            borderWidth: 1,
+                            borderRadius: 8
                         },
                         {
                             label: 'Pengeluaran',
                             data: expenseData.length > 0 ? expenseData : [0],
                             backgroundColor: 'rgba(244, 67, 54, 0.8)',
                             borderColor: 'rgba(244, 67, 54, 1)',
-                            borderWidth: 1
+                            borderWidth: 1,
+                            borderRadius: 8
                         }
                     ]
                 },
@@ -755,6 +1473,22 @@
                             ticks: {
                                 callback: function(value) {
                                     return 'Rp ' + value.toLocaleString('id-ID');
+                                },
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0,0,0,0.05)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                font: {
+                                    family: "'Inter', sans-serif"
                                 }
                             }
                         }
@@ -772,7 +1506,6 @@
             });
         }
 
-        // Filter by status
         function filterStatus(status) {
             if (status === 'all') {
                 updateTable(allTransactions);
@@ -781,10 +1514,6 @@
                 updateTable(filtered);
             }
         }
-
-        // ==========================================
-        // UTILITY FUNCTIONS
-        // ==========================================
 
         function formatRupiah(amount) {
             return 'Rp ' + amount.toLocaleString('id-ID');
@@ -826,7 +1555,6 @@
             });
         }
 
-        // Set default date to today
         document.getElementById('tanggal').valueAsDate = new Date();
     </script>
 
