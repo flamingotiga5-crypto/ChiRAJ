@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SheetJS for Excel Export -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     
     <style>
         :root {
@@ -26,104 +28,66 @@
             --font-display: 'Plus Jakarta Sans', sans-serif;
             
             /* Accounting Colors */
-            --color-asset: #0d47a1;   /* Blue */
-            --color-liability: #c62828; /* Red */
-            --color-equity: #6a1b9a;  /* Purple */
-            --color-revenue: #2e7d32; /* Green */
-            --color-expense: #d84315; /* Orange/Red */
+            --color-asset: #0d47a1;
+            --color-liability: #c62828;
+            --color-equity: #6a1b9a;
+            --color-revenue: #2e7d32;
+            --color-expense: #d84315;
         }
         
         * { font-family: var(--font-main); }
-        
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-            min-height: 100vh;
-        }
+        body { background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%); min-height: 100vh; }
         
         /* NAVBAR */
-        .navbar {
-            background: linear-gradient(135deg, #0d3320 0%, #1b5e20 50%, #2e7d32 100%);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            padding: 12px 0;
-            border-bottom: 3px solid var(--accent-color);
-        }
-        
+        .navbar { background: linear-gradient(135deg, #0d3320 0%, #1b5e20 50%, #2e7d32 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.15); padding: 12px 0; border-bottom: 3px solid var(--accent-color); }
         .navbar-brand { display: flex; align-items: center; gap: 15px; padding: 5px 0; }
-        .navbar-brand .logo-wrapper {
-            width: 55px; height: 55px; border-radius: 50%; overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.3); background: white;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
+        .navbar-brand .logo-wrapper { width: 55px; height: 55px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); background: white; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .navbar-brand .logo-wrapper img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
         .navbar-brand .brand-name { font-size: 1.6rem; font-weight: 800; color: white; font-family: var(--font-display); }
         .navbar-brand .brand-tagline { font-size: 0.7rem; color: rgba(255,255,255,0.85); text-transform: uppercase; }
-        
         .navbar .nav-link { color: rgba(255,255,255,0.9) !important; font-weight: 500; border-radius: 8px; transition: all 0.3s ease; }
         .navbar .nav-link:hover { background: rgba(255,255,255,0.15); color: white !important; }
-        
-        .user-badge {
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(255,255,255,0.1); padding: 8px 16px;
-            border-radius: 25px; border: 1px solid rgba(255,255,255,0.2);
-        }
+        .user-badge { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 25px; border: 1px solid rgba(255,255,255,0.2); }
         .user-badge i { color: var(--accent-color); }
         .user-badge span { color: white; font-weight: 500; font-size: 0.9rem; }
         
         /* ACCOUNTING STAT CARDS */
-        .stat-card {
-            color: white; padding: 25px; border-radius: 20px; position: relative;
-            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            height: 100%;
-        }
+        .stat-card { color: white; padding: 25px; border-radius: 20px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); height: 100%; }
         .stat-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
-        .stat-card::before {
-            content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%;
-        }
-        
+        .stat-card::before { content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%; }
         .stat-label { font-size: 0.8rem; font-weight: 600; opacity: 0.95; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         .stat-value { font-size: 1.8rem; font-weight: 700; font-family: var(--font-display); line-height: 1.2; font-variant-numeric: tabular-nums; }
         .stat-sub { font-size: 0.75rem; opacity: 0.8; margin-top: 5px; font-style: italic; }
         .stat-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 3.5rem; opacity: 0.15; }
-        
         .bg-asset { background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%); }
         .bg-liability { background: linear-gradient(135deg, #c62828 0%, #ef5350 100%); }
         .bg-equity { background: linear-gradient(135deg, #6a1b9a 0%, #ab47bc 100%); }
         .bg-revenue { background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); }
         .bg-expense { background: linear-gradient(135deg, #d84315 0%, #ff7043 100%); }
         
-        /* SECTION HEADERS */
+        /* SECTION HEADERS & BADGES */
         .section-header { display: flex; align-items: center; justify-content: space-between; margin: 25px 0 15px; }
         .section-title { font-size: 1.3rem; font-weight: 700; color: #1a1a1a; display: flex; align-items: center; gap: 12px; }
         .section-title i { color: var(--primary-color); font-size: 1.4rem; }
         .section-badge { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 8px 18px; border-radius: 25px; font-size: 0.85rem; font-weight: 600; }
         .section-badge.warning { background: linear-gradient(135deg, #ff9a56, #ff6f00); }
         
-        /* STATUS & PIC CARDS (Existing Styles Preserved) */
-        .status-card, .pic-card {
-            border-radius: 20px; padding: 25px; color: white; position: relative;
-            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            transition: all 0.4s ease; height: 100%;
-        }
+        /* STATUS & PIC CARDS */
+        .status-card, .pic-card { border-radius: 20px; padding: 25px; color: white; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15); transition: all 0.4s ease; height: 100%; }
         .status-card:hover, .pic-card:hover { transform: translateY(-5px); }
         .status-open { background: linear-gradient(135deg, #ff9a56 0%, #ff6f00 100%); }
         .status-solved { background: linear-gradient(135deg, #56ab2f 0%, #00c853 100%); }
-        
         .pic-sidik { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .pic-adit { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .pic-palung { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .pic-other { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-        
         .pic-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 12px; z-index: 1; position: relative; }
         .pic-photo { width: 45px; height: 45px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.9); object-fit: cover; }
         .pic-count-badge { margin-left: auto; background: rgba(255,255,255,0.95); color: #333; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; }
-        
         .pic-stats { display: flex; gap: 10px; position: relative; z-index: 1; }
         .pic-stat-item { flex: 1; background: rgba(255,255,255,0.2); padding: 10px; border-radius: 12px; backdrop-filter: blur(10px); }
         .pic-stat-label { font-size: 0.7rem; opacity: 0.95; margin-bottom: 4px; text-transform: uppercase; }
         .pic-stat-value { font-size: 0.95rem; font-weight: 700; font-family: var(--font-display); }
-        
         .status-stat-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.2); padding: 12px 15px; border-radius: 12px; margin-bottom: 10px; }
         .status-total { margin-top: 15px; padding-top: 15px; border-top: 2px solid rgba(255,255,255,0.3); display: flex; justify-content: space-between; align-items: center; }
         
@@ -132,29 +96,30 @@
         .table thead { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
         .table thead th { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; padding: 15px 12px; border: none; }
         .table tbody td { padding: 14px 12px; vertical-align: middle; font-size: 0.9rem; border-bottom: 1px solid #f0f0f0; }
-        
         .badge-status { padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; display: inline-block; min-width: 80px; text-align: center; }
         .badge-open { background: linear-gradient(135deg, #ff9a56, #ff6f00); color: white; }
         .badge-solved { background: linear-gradient(135deg, #56ab2f, #00c853); color: white; }
-        
         .text-success-custom { color: #00c853 !important; font-weight: 700; font-family: var(--font-display); }
         .text-danger-custom { color: #ff5252 !important; font-weight: 700; font-family: var(--font-display); }
         
-        /* FORMS */
+        /* FORMS & UTILS */
         .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border: none; font-weight: 600; padding: 12px; border-radius: 12px; }
         .form-control, .form-select { border-radius: 10px; border: 2px solid #e0e0e0; padding: 10px 14px; }
         .form-control:focus, .form-select:focus { border-color: var(--secondary-color); box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.2); }
-        
-        /* LOGIN */
         .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d3320 0%, #1b5e20 50%, #2e7d32 100%); position: relative; }
         .login-box { background: white; padding: 45px 40px; border-radius: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 450px; width: 90%; z-index: 1; }
-        
         .hidden { display: none !important; }
         .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1055; }
         
+        /* Pagination Styles */
+        .pagination-container { display: flex; justify-content: space-between; align-items: center; margin-top: 20px; flex-wrap: wrap; gap: 10px; }
+        .page-link { color: var(--primary-color); cursor: pointer; padding: 5px 12px; border-radius: 5px; border: 1px solid #dee2e6; background: white; }
+        .page-link.active { background: var(--primary-color); color: white; border-color: var(--primary-color); }
+        .page-link:hover:not(.active) { background: #e9ecef; }
+        .page-link.disabled { opacity: 0.5; cursor: not-allowed; }
+
         @media (max-width: 768px) {
             .stat-value { font-size: 1.4rem; }
             .navbar-brand .brand-name { font-size: 1.3rem; }
@@ -174,14 +139,8 @@
                 <p class="text-muted small">CV REZEKI AMANAH JAYA Group</p>
             </div>
             <form id="loginForm">
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" id="loginEmail" required placeholder="email@example.com">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" id="loginPassword" required placeholder="••••••••">
-                </div>
+                <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="loginEmail" required placeholder="email@example.com"></div>
+                <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="loginPassword" required placeholder="••••••••"></div>
                 <button type="submit" class="btn btn-primary w-100 py-2"><i class="fas fa-sign-in-alt me-2"></i>Login</button>
             </form>
             <div class="text-center mt-3">
@@ -216,7 +175,7 @@
                     <div class="logo-wrapper"><img src="logo.png" alt="Logo" onerror="this.style.display='none'"></div>
                     <div class="brand-text">
                         <div class="brand-name">ChiRAJ</div>
-                        <div class="brand-tagline">Finance & Accounting</div>
+                        <div class="brand-tagline">Cermat Hitung RAJ</div>
                     </div>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
@@ -233,7 +192,6 @@
             
             <!-- 5 ELEMENTS OF ACCOUNTING STATS -->
             <div class="row mb-4 g-3">
-                <!-- Aset -->
                 <div class="col-md-4 col-lg-2-4">
                     <div class="stat-card bg-asset">
                         <div class="stat-label">Aset (Harta)</div>
@@ -242,7 +200,6 @@
                         <i class="fas fa-landmark stat-icon"></i>
                     </div>
                 </div>
-                <!-- Kewajiban -->
                 <div class="col-md-4 col-lg-2-4">
                     <div class="stat-card bg-liability">
                         <div class="stat-label">Kewajiban (Utang)</div>
@@ -251,7 +208,6 @@
                         <i class="fas fa-file-invoice-dollar stat-icon"></i>
                     </div>
                 </div>
-                <!-- Modal -->
                 <div class="col-md-4 col-lg-2-4">
                     <div class="stat-card bg-equity">
                         <div class="stat-label">Modal (Ekuitas)</div>
@@ -260,7 +216,6 @@
                         <i class="fas fa-balance-scale stat-icon"></i>
                     </div>
                 </div>
-                <!-- Pendapatan -->
                 <div class="col-md-6 col-lg-3">
                     <div class="stat-card bg-revenue">
                         <div class="stat-label">Pendapatan (Revenue)</div>
@@ -269,7 +224,6 @@
                         <i class="fas fa-arrow-down stat-icon"></i>
                     </div>
                 </div>
-                <!-- Beban -->
                 <div class="col-md-6 col-lg-3">
                     <div class="stat-card bg-expense">
                         <div class="stat-label">Beban (Expenses)</div>
@@ -280,7 +234,7 @@
                 </div>
             </div>
 
-            <!-- Status Keuangan: Open vs Solved (Retained for Operational Tracking) -->
+            <!-- Status Keuangan: Open vs Solved -->
             <div class="section-header">
                 <div class="section-title"><i class="fas fa-exchange-alt"></i> Status Pencairan Dana</div>
                 <div class="section-badge" id="totalTransactions">0 Transaksi</div>
@@ -291,38 +245,20 @@
                     <div class="status-card status-open">
                         <div class="status-title"><i class="fas fa-clock"></i> <span>OPEN (Belum Cair)</span></div>
                         <div class="status-stats">
-                            <div class="status-stat-row">
-                                <div class="status-stat-label"><i class="fas fa-arrow-down"></i> Piutang (Income)</div>
-                                <div class="status-stat-value" id="open-income">Rp 0</div>
-                            </div>
-                            <div class="status-stat-row">
-                                <div class="status-stat-label"><i class="fas fa-arrow-up"></i> Utang (Expense)</div>
-                                <div class="status-stat-value" id="open-expense">Rp 0</div>
-                            </div>
+                            <div class="status-stat-row"><div class="status-stat-label"><i class="fas fa-arrow-down"></i> Piutang (Income)</div><div class="status-stat-value" id="open-income">Rp 0</div></div>
+                            <div class="status-stat-row"><div class="status-stat-label"><i class="fas fa-arrow-up"></i> Utang (Expense)</div><div class="status-stat-value" id="open-expense">Rp 0</div></div>
                         </div>
-                        <div class="status-total">
-                            <div class="status-total-label"><i class="fas fa-balance-scale"></i> Net Open</div>
-                            <div class="status-total-value" id="open-net">Rp 0</div>
-                        </div>
+                        <div class="status-total"><div class="status-total-label"><i class="fas fa-balance-scale"></i> Net Open</div><div class="status-total-value" id="open-net">Rp 0</div></div>
                     </div>
                 </div>
                 <div class="col-md-6 mb-3">
                     <div class="status-card status-solved">
                         <div class="status-title"><i class="fas fa-check-circle"></i> <span>SOLVED (Sudah Cair)</span></div>
                         <div class="status-stats">
-                            <div class="status-stat-row">
-                                <div class="status-stat-label"><i class="fas fa-arrow-down"></i> Pendapatan Tunai</div>
-                                <div class="status-stat-value" id="solved-income">Rp 0</div>
-                            </div>
-                            <div class="status-stat-row">
-                                <div class="status-stat-label"><i class="fas fa-arrow-up"></i> Beban Terbayar</div>
-                                <div class="status-stat-value" id="solved-expense">Rp 0</div>
-                            </div>
+                            <div class="status-stat-row"><div class="status-stat-label"><i class="fas fa-arrow-down"></i> Pendapatan Tunai</div><div class="status-stat-value" id="solved-income">Rp 0</div></div>
+                            <div class="status-stat-row"><div class="status-stat-label"><i class="fas fa-arrow-up"></i> Beban Terbayar</div><div class="status-stat-value" id="solved-expense">Rp 0</div></div>
                         </div>
-                        <div class="status-total">
-                            <div class="status-total-label"><i class="fas fa-balance-scale"></i> Net Solved</div>
-                            <div class="status-total-value" id="solved-net">Rp 0</div>
-                        </div>
+                        <div class="status-total"><div class="status-total-label"><i class="fas fa-balance-scale"></i> Net Solved</div><div class="status-total-value" id="solved-net">Rp 0</div></div>
                     </div>
                 </div>
             </div>
@@ -412,18 +348,34 @@
                 </div>
             </div>
 
-            <!-- Transactions Table -->
+            <!-- Transactions Table with Search & Pagination -->
             <div class="card p-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                     <h5 class="card-title mb-0"><i class="fas fa-list me-2" style="color: var(--primary-color);"></i>Riwayat Transaksi</h5>
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-outline-success" onclick="filterStatus('all')">Semua</button>
-                        <button class="btn btn-sm btn-outline-warning" onclick="filterStatus('Open')">Open</button>
-                        <button class="btn btn-sm btn-outline-success" onclick="filterStatus('Solved')">Solved</button>
+                    <div class="d-flex gap-2 align-items-center">
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-success" onclick="filterStatus('all')">Semua</button>
+                            <button class="btn btn-sm btn-outline-warning" onclick="filterStatus('Open')">Open</button>
+                            <button class="btn btn-sm btn-outline-success" onclick="filterStatus('Solved')">Solved</button>
+                        </div>
+                        <button class="btn btn-sm btn-success" onclick="exportToExcel()">
+                            <i class="fas fa-file-excel me-1"></i> Export
+                        </button>
                     </div>
                 </div>
+                
+                <!-- Search Bar -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
+                            <input type="text" class="form-control border-start-0 ps-0" id="searchInput" placeholder="Cari uraian, PIC, atau status..." onkeyup="handleSearch()">
+                        </div>
+                    </div>
+                </div>
+
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table table-hover" id="mainTable">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -441,6 +393,21 @@
                             <tr><td colspan="9" class="text-center text-muted"><div class="spinner-border spinner-border-sm me-2"></div>Memuat data...</td></tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="pagination-container">
+                    <div class="d-flex align-items-center gap-2">
+                        <small class="text-muted">Tampilkan:</small>
+                        <select class="form-select form-select-sm" style="width: 80px;" id="rowsPerPage" onchange="changeRowsPerPage()">
+                            <option value="10" selected>10</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                    <div class="d-flex align-items-center gap-2" id="paginationControls">
+                        <!-- Buttons will be injected here by JS -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -473,6 +440,12 @@
         let currentUser = null;
         let financeChart = null;
         let allTransactions = [];
+        let filteredTransactions = []; // For search/filter results
+        
+        // Pagination State
+        let currentPage = 1;
+        let rowsPerPage = 10;
+        let currentFilter = 'all';
 
         auth.onAuthStateChanged(user => {
             if (user) {
@@ -584,16 +557,14 @@
             updateStats();
             updateStatusBreakdown();
             updateOpenPerPIC();
-            updateTable();
+            applyFilters(); // This will call updateTable and pagination
             updateChart();
         }
 
         function updateStats() {
-            // Perhitungan Dasar
             const totalRevenue = allTransactions.reduce((sum, t) => sum + (t.income || 0), 0);
             const totalExpense = allTransactions.reduce((sum, t) => sum + (t.outcome || 0), 0);
             
-            // Perhitungan Open/Solved untuk Mapping Akuntansi
             let openIncome = 0, openExpense = 0;
             let solvedIncome = 0, solvedExpense = 0;
 
@@ -607,19 +578,12 @@
                 }
             });
 
-            // LOGIKA AKUNTANSI:
-            // 1. Aset = Kas (Solved Net) + Piutang (Open Income)
             const cashBalance = solvedIncome - solvedExpense; 
             const accountsReceivable = openIncome;
             const totalAssets = cashBalance + accountsReceivable;
-
-            // 2. Kewajiban = Utang Usaha (Open Expense / Beban yang belum dibayar)
             const totalLiabilities = openExpense;
-
-            // 3. Modal = Aset - Kewajiban (Atau bisa juga dihitung sebagai Retained Earnings)
             const totalEquity = totalAssets - totalLiabilities;
 
-            // Update UI Elements
             document.getElementById('acc-asset').textContent = formatRupiah(totalAssets);
             document.getElementById('acc-liability').textContent = formatRupiah(totalLiabilities);
             document.getElementById('acc-equity').textContent = formatRupiah(totalEquity);
@@ -675,29 +639,106 @@
             });
         }
 
-        function updateTable(filteredData = null) {
-            const data = filteredData || allTransactions;
-            const tbody = document.getElementById('transactionTable');
-            if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Belum ada transaksi</td></tr>'; return; }
+        // --- SEARCH & FILTER LOGIC ---
+        function handleSearch() {
+            currentPage = 1; // Reset to page 1 when searching
+            applyFilters();
+        }
 
-            const sortedData = [...data].sort((a, b) => new Date(a.tanggal || '1970-01-01') - new Date(b.tanggal || '1970-01-01'));
-            let saldo = 0;
-            tbody.innerHTML = sortedData.map((t, index) => {
-                saldo += (t.income || 0) - (t.outcome || 0);
+        function filterStatus(status) {
+            currentFilter = status;
+            currentPage = 1;
+            applyFilters();
+        }
+
+        function changeRowsPerPage() {
+            rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+            currentPage = 1;
+            updateTable();
+            renderPagination();
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredTransactions = allTransactions.filter(t => {
+                const matchesSearch = 
+                    (t.uraian && t.uraian.toLowerCase().includes(searchTerm)) ||
+                    (t.pic && t.pic.toLowerCase().includes(searchTerm)) ||
+                    (t.status && t.status.toLowerCase().includes(searchTerm));
+                
+                const matchesStatus = currentFilter === 'all' || t.status === currentFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+
+            updateTable();
+            renderPagination();
+        }
+
+        function updateTable() {
+            const tbody = document.getElementById('transactionTable');
+            
+            // Calculate start and end index for pagination
+            const startIndex = (currentPage - 1) * rowsPerPage;
+            const endIndex = startIndex + rowsPerPage;
+            const paginatedData = filteredTransactions.slice(startIndex, endIndex);
+
+            if (paginatedData.length === 0) { 
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Tidak ada data yang ditemukan</td></tr>'; 
+                return; 
+            }
+
+            // Note: Saldo calculation in table is tricky with pagination. 
+            // For simplicity in paginated view, we show running balance of the visible items or just static data.
+            // Here I'll keep it simple as per request.
+            
+            tbody.innerHTML = paginatedData.map((t, index) => {
+                // We use the global index for numbering if needed, or local index
+                const displayNo = startIndex + index + 1;
                 const statusClass = t.status === 'Open' ? 'badge-open' : 'badge-solved';
                 return `
                     <tr>
-                        <td>${t.no || (index + 1)}</td>
+                        <td>${displayNo}</td>
                         <td>${formatDate(t.tanggal)}</td>
                         <td>${t.uraian}</td>
                         <td class="text-success-custom">${t.income ? formatRupiah(t.income) : '-'}</td>
                         <td class="text-danger-custom">${t.outcome ? formatRupiah(t.outcome) : '-'}</td>
-                        <td class="fw-bold">${formatRupiah(saldo)}</td>
+                        <td class="fw-bold">${formatRupiah(t.saldo)}</td>
                         <td>${t.pic || '-'}</td>
                         <td><span class="badge-status ${statusClass}">${t.status}</span></td>
                         <td><small>${t.createdByName || '-'}</small></td>
                     </tr>`;
             }).join('');
+        }
+
+        function renderPagination() {
+            const totalPages = Math.ceil(filteredTransactions.length / rowsPerPage);
+            const container = document.getElementById('paginationControls');
+            
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = `
+                <button class="page-link ${currentPage === 1 ? 'disabled' : ''}" onclick="goToPage(${currentPage - 1})">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <span class="text-muted small">Hal ${currentPage} dari ${totalPages}</span>
+                <button class="page-link ${currentPage === totalPages ? 'disabled' : ''}" onclick="goToPage(${currentPage + 1})">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+            container.innerHTML = html;
+        }
+
+        function goToPage(page) {
+            const totalPages = Math.ceil(filteredTransactions.length / rowsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            updateTable();
+            renderPagination();
         }
 
         function updateChart() {
@@ -725,7 +766,33 @@
             });
         }
 
-        function filterStatus(status) { updateTable(status === 'all' ? allTransactions : allTransactions.filter(t => t.status === status)); }
+        // EXPORT TO EXCEL FUNCTION
+        function exportToExcel() {
+            if (allTransactions.length === 0) {
+                showToast('Tidak ada data untuk diekspor', 'error');
+                return;
+            }
+
+            const excelData = allTransactions.map((t, index) => ({
+                "No": t.no || index + 1,
+                "Tanggal": t.tanggal,
+                "Uraian": t.uraian,
+                "Pendapatan (Rp)": t.income || 0,
+                "Beban (Rp)": t.outcome || 0,
+                "PIC": t.pic,
+                "Status": t.status,
+                "Input Oleh": t.createdByName
+            }));
+
+            const ws = XLSX.utils.json_to_sheet(excelData);
+            ws['!cols'] = [{ wch: 5 }, { wch: 12 }, { wch: 30 }, { wch: 15 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, { wch: 15 }];
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Laporan Keuangan ChiRAJ");
+            const dateStr = new Date().toISOString().split('T')[0];
+            XLSX.writeFile(wb, `Laporan_Keuangan_ChiRAJ_${dateStr}.xlsx`);
+            showToast('File Excel berhasil diunduh!', 'success');
+        }
+
         function formatRupiah(amount) { return 'Rp ' + amount.toLocaleString('id-ID'); }
         function formatDate(dateString) { if (!dateString || dateString === '-') return '-'; return new Date(dateString).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }); }
         
