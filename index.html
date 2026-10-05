@@ -33,6 +33,7 @@
             --color-equity: #6a1b9a;
             --color-revenue: #2e7d32;
             --color-expense: #d84315;
+            --color-investor: #8e24aa; /* Purple for Investor */
         }
         
         * { font-family: var(--font-main); }
@@ -318,28 +319,54 @@
                 </div>
                 <div class="col-lg-4 mb-3">
                     <div class="card p-4">
-                        <h5 class="card-title mb-3"><i class="fas fa-plus-circle me-2" style="color: var(--secondary-color);"></i>Tambah Transaksi</h5>
+                        <h5 class="card-title mb-3"><i class="fas fa-plus-circle me-2" style="color: var(--secondary-color);"></i>Input Jurnal / Transaksi</h5>
                         <form id="transactionForm">
                             <div class="mb-3"><label class="form-label">Tanggal</label><input type="date" class="form-control" id="tanggal" required></div>
-                            <div class="row mb-3">
-                                <div class="col-6"><label class="form-label">Pendapatan</label><input type="number" class="form-control" id="income" placeholder="0" value="0"></div>
-                                <div class="col-6"><label class="form-label">Beban</label><input type="number" class="form-control" id="outcome" placeholder="0" value="0"></div>
-                            </div>
-                            <div class="mb-3"><label class="form-label">Uraian</label><textarea class="form-control" id="uraian" rows="2" required placeholder="Keterangan transaksi"></textarea></div>
+                            
+                            <!-- NEW: Accounting Category Selection -->
                             <div class="mb-3">
-                                <label class="form-label">PIC</label>
+                                <label class="form-label">Kategori Akuntansi</label>
+                                <select class="form-select" id="accCategory" onchange="toggleFinanceFields()">
+                                    <option value="Operasional">Operasional Harian (Default)</option>
+                                    <option value="Pendapatan">Pendapatan (Revenue)</option>
+                                    <option value="Beban">Beban / Pengeluaran (Expense)</option>
+                                    <option value="Aset">Penambahan Aset (Harta)</option>
+                                    <option value="Kewajiban">Kewajiban / Utang Baru</option>
+                                    <option value="Modal">Penyetoran Modal (Ekuitas)</option>
+                                </select>
+                            </div>
+
+                            <!-- NEW: Investor Selector (Hidden by default) -->
+                            <div class="mb-3 hidden" id="investorField">
+                                <label class="form-label">Nama Investor</label>
+                                <select class="form-select" id="investorName">
+                                    <option value="">Pilih Investor...</option>
+                                    <option value="Investor A">Investor A</option>
+                                    <option value="Investor B">Investor B</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-6"><label class="form-label">Nominal Masuk</label><input type="number" class="form-control" id="income" placeholder="0" value="0"></div>
+                                <div class="col-6"><label class="form-label">Nominal Keluar</label><input type="number" class="form-control" id="outcome" placeholder="0" value="0"></div>
+                            </div>
+                            <div class="mb-3"><label class="form-label">Uraian / Keterangan</label><textarea class="form-control" id="uraian" rows="2" required placeholder="Contoh: Bayar Listrik, Setor Modal, dll"></textarea></div>
+                            <div class="mb-3">
+                                <label class="form-label">PIC / Penanggung Jawab</label>
                                 <select class="form-select" id="pic" required>
                                     <option value="">Pilih PIC</option>
                                     <option value="Sidik">Sidik</option>
                                     <option value="Adit">Adit</option>
                                     <option value="Palung">Palung</option>
+                                    <option value="Admin">Admin / Finance</option>
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Status</label>
+                                <label class="form-label">Status Pencairan</label>
                                 <select class="form-select" id="status" required>
-                                    <option value="Open">Open (Belum Cair)</option>
-                                    <option value="Solved">Solved (Sudah Cair)</option>
+                                    <option value="Open">Open (Belum Cair/Bayar)</option>
+                                    <option value="Solved">Solved (Sudah Cair/Lunas)</option>
                                 </select>
                             </div>
                             <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save me-2"></i>Simpan Transaksi</button>
@@ -369,7 +396,7 @@
                     <div class="col-md-6">
                         <div class="input-group">
                             <span class="input-group-text bg-white border-end-0"><i class="fas fa-search text-muted"></i></span>
-                            <input type="text" class="form-control border-start-0 ps-0" id="searchInput" placeholder="Cari uraian, PIC, atau status..." onkeyup="handleSearch()">
+                            <input type="text" class="form-control border-start-0 ps-0" id="searchInput" placeholder="Cari uraian, PIC, atau kategori..." onkeyup="handleSearch()">
                         </div>
                     </div>
                 </div>
@@ -380,17 +407,16 @@
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
+                                <th>Kategori</th>
                                 <th>Uraian</th>
-                                <th>Pendapatan</th>
-                                <th>Beban</th>
-                                <th>Saldo</th>
+                                <th>Masuk</th>
+                                <th>Keluar</th>
                                 <th>PIC</th>
                                 <th>Status</th>
-                                <th>Input Oleh</th>
                             </tr>
                         </thead>
                         <tbody id="transactionTable">
-                            <tr><td colspan="9" class="text-center text-muted"><div class="spinner-border spinner-border-sm me-2"></div>Memuat data...</td></tr>
+                            <tr><td colspan="8" class="text-center text-muted"><div class="spinner-border spinner-border-sm me-2"></div>Memuat data...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -440,7 +466,7 @@
         let currentUser = null;
         let financeChart = null;
         let allTransactions = [];
-        let filteredTransactions = []; // For search/filter results
+        let filteredTransactions = []; 
         
         // Pagination State
         let currentPage = 1;
@@ -506,6 +532,8 @@
                         income: parseAmount(row.Income) || 0,
                         outcome: parseAmount(row.Outcome) || 0,
                         uraian: row.Uraian || '-',
+                        category: row.Category || 'Operasional', 
+                        investor: row.Investor || '', // New Field
                         pic: row.PIC || '-',
                         status: (row.Status || 'Open').toString().toLowerCase() === 'solved' ? 'Solved' : 'Open',
                         saldo: parseAmount(row.Saldo) || 0,
@@ -522,6 +550,28 @@
             }
         }
 
+        // Helper to auto-fill fields based on category
+        function toggleFinanceFields() {
+            const cat = document.getElementById('accCategory').value;
+            const incomeInput = document.getElementById('income');
+            const outcomeInput = document.getElementById('outcome');
+            const investorField = document.getElementById('investorField');
+            
+            // Reset values to 0 first
+            incomeInput.value = 0;
+            outcomeInput.value = 0;
+            investorField.classList.add('hidden');
+
+            if (cat === 'Pendapatan' || cat === 'Aset') {
+                incomeInput.focus();
+            } else if (cat === 'Beban' || cat === 'Kewajiban') {
+                outcomeInput.focus();
+            } else if (cat === 'Modal') {
+                investorField.classList.remove('hidden');
+                incomeInput.focus();
+            }
+        }
+
         document.getElementById('transactionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = e.target.querySelector('button[type="submit"]');
@@ -530,11 +580,18 @@
             btn.disabled = true;
 
             try {
+                const category = document.getElementById('accCategory').value;
+                const income = parseFloat(document.getElementById('income').value) || 0;
+                const outcome = parseFloat(document.getElementById('outcome').value) || 0;
+                const investor = document.getElementById('investorName').value;
+
                 const data = {
                     type: 'keuangan',
                     tanggal: document.getElementById('tanggal').value,
-                    income: parseFloat(document.getElementById('income').value) || 0,
-                    outcome: parseFloat(document.getElementById('outcome').value) || 0,
+                    category: category, 
+                    investor: category === 'Modal' ? investor : '', // Save investor name if category is Modal
+                    income: income,
+                    outcome: outcome,
                     uraian: document.getElementById('uraian').value,
                     pic: document.getElementById('pic').value,
                     status: document.getElementById('status').value,
@@ -557,7 +614,7 @@
             updateStats();
             updateStatusBreakdown();
             updateOpenPerPIC();
-            applyFilters(); // This will call updateTable and pagination
+            applyFilters(); 
             updateChart();
         }
 
@@ -641,7 +698,7 @@
 
         // --- SEARCH & FILTER LOGIC ---
         function handleSearch() {
-            currentPage = 1; // Reset to page 1 when searching
+            currentPage = 1; 
             applyFilters();
         }
 
@@ -665,6 +722,8 @@
                 const matchesSearch = 
                     (t.uraian && t.uraian.toLowerCase().includes(searchTerm)) ||
                     (t.pic && t.pic.toLowerCase().includes(searchTerm)) ||
+                    (t.category && t.category.toLowerCase().includes(searchTerm)) ||
+                    (t.investor && t.investor.toLowerCase().includes(searchTerm)) ||
                     (t.status && t.status.toLowerCase().includes(searchTerm));
                 
                 const matchesStatus = currentFilter === 'all' || t.status === currentFilter;
@@ -678,36 +737,33 @@
 
         function updateTable() {
             const tbody = document.getElementById('transactionTable');
-            
-            // Calculate start and end index for pagination
             const startIndex = (currentPage - 1) * rowsPerPage;
             const endIndex = startIndex + rowsPerPage;
             const paginatedData = filteredTransactions.slice(startIndex, endIndex);
 
             if (paginatedData.length === 0) { 
-                tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Tidak ada data yang ditemukan</td></tr>'; 
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Tidak ada data yang ditemukan</td></tr>'; 
                 return; 
             }
 
-            // Note: Saldo calculation in table is tricky with pagination. 
-            // For simplicity in paginated view, we show running balance of the visible items or just static data.
-            // Here I'll keep it simple as per request.
-            
             tbody.innerHTML = paginatedData.map((t, index) => {
-                // We use the global index for numbering if needed, or local index
                 const displayNo = startIndex + index + 1;
                 const statusClass = t.status === 'Open' ? 'badge-open' : 'badge-solved';
+                let catDisplay = t.category || '-';
+                if (t.category === 'Modal' && t.investor) {
+                    catDisplay += ` <small class="text-muted">(${t.investor})</small>`;
+                }
+                
                 return `
                     <tr>
                         <td>${displayNo}</td>
                         <td>${formatDate(t.tanggal)}</td>
+                        <td>${catDisplay}</td>
                         <td>${t.uraian}</td>
                         <td class="text-success-custom">${t.income ? formatRupiah(t.income) : '-'}</td>
                         <td class="text-danger-custom">${t.outcome ? formatRupiah(t.outcome) : '-'}</td>
-                        <td class="fw-bold">${formatRupiah(t.saldo)}</td>
                         <td>${t.pic || '-'}</td>
                         <td><span class="badge-status ${statusClass}">${t.status}</span></td>
-                        <td><small>${t.createdByName || '-'}</small></td>
                     </tr>`;
             }).join('');
         }
@@ -776,6 +832,8 @@
             const excelData = allTransactions.map((t, index) => ({
                 "No": t.no || index + 1,
                 "Tanggal": t.tanggal,
+                "Kategori": t.category || 'Operasional',
+                "Investor": t.investor || '-',
                 "Uraian": t.uraian,
                 "Pendapatan (Rp)": t.income || 0,
                 "Beban (Rp)": t.outcome || 0,
@@ -785,7 +843,7 @@
             }));
 
             const ws = XLSX.utils.json_to_sheet(excelData);
-            ws['!cols'] = [{ wch: 5 }, { wch: 12 }, { wch: 30 }, { wch: 15 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, { wch: 15 }];
+            ws['!cols'] = [{ wch: 5 }, { wch: 12 }, { wch: 15 }, { wch: 15 }, { wch: 30 }, { wch: 15 }, { wch: 15 }, { wch: 10 }, { wch: 10 }, { wch: 15 }];
             const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Laporan Keuangan ChiRAJ");
             const dateStr = new Date().toISOString().split('T')[0];
