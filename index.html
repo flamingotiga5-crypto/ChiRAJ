@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChiRAJ - Cermat Hitung Rezeki Amanah Jaya</title>
     
-    <!-- Google Fonts - Inter untuk readability terbaik -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -24,21 +24,23 @@
             --accent-color: #ffd700;
             --font-main: 'Inter', sans-serif;
             --font-display: 'Plus Jakarta Sans', sans-serif;
+            
+            /* Accounting Colors */
+            --color-asset: #0d47a1;   /* Blue */
+            --color-liability: #c62828; /* Red */
+            --color-equity: #6a1b9a;  /* Purple */
+            --color-revenue: #2e7d32; /* Green */
+            --color-expense: #d84315; /* Orange/Red */
         }
         
-        * {
-            font-family: var(--font-main);
-        }
+        * { font-family: var(--font-main); }
         
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-            font-family: var(--font-main);
             min-height: 100vh;
         }
         
-        /* ============================================
-           NAVBAR - PROPORTIONAL & AESTHETIC
-           ============================================ */
+        /* NAVBAR */
         .navbar {
             background: linear-gradient(135deg, #0d3320 0%, #1b5e20 50%, #2e7d32 100%);
             box-shadow: 0 4px 20px rgba(0,0,0,0.15);
@@ -46,655 +48,116 @@
             border-bottom: 3px solid var(--accent-color);
         }
         
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 5px 0;
-        }
-        
+        .navbar-brand { display: flex; align-items: center; gap: 15px; padding: 5px 0; }
         .navbar-brand .logo-wrapper {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid rgba(255,255,255,0.3);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: white;
-            flex-shrink: 0;
+            width: 55px; height: 55px; border-radius: 50%; overflow: hidden;
+            border: 2px solid rgba(255,255,255,0.3); background: white;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
         }
+        .navbar-brand .logo-wrapper img { width: 100%; height: 100%; object-fit: contain; padding: 3px; }
+        .navbar-brand .brand-name { font-size: 1.6rem; font-weight: 800; color: white; font-family: var(--font-display); }
+        .navbar-brand .brand-tagline { font-size: 0.7rem; color: rgba(255,255,255,0.85); text-transform: uppercase; }
         
-        .navbar-brand .logo-wrapper img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            padding: 3px;
-        }
-        
-        .navbar-brand .brand-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.2;
-        }
-        
-        .navbar-brand .brand-name {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: white;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            font-family: var(--font-display);
-        }
-        
-        .navbar-brand .brand-tagline {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.85);
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-        
-        .navbar .nav-link {
-            color: rgba(255,255,255,0.9) !important;
-            font-weight: 500;
-            font-size: 0.9rem;
-            padding: 8px 16px !important;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .navbar .nav-link:hover {
-            background: rgba(255,255,255,0.15);
-            color: white !important;
-        }
+        .navbar .nav-link { color: rgba(255,255,255,0.9) !important; font-weight: 500; border-radius: 8px; transition: all 0.3s ease; }
+        .navbar .nav-link:hover { background: rgba(255,255,255,0.15); color: white !important; }
         
         .user-badge {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: rgba(255,255,255,0.1);
-            padding: 8px 16px;
-            border-radius: 25px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(255,255,255,0.1); padding: 8px 16px;
+            border-radius: 25px; border: 1px solid rgba(255,255,255,0.2);
         }
+        .user-badge i { color: var(--accent-color); }
+        .user-badge span { color: white; font-weight: 500; font-size: 0.9rem; }
         
-        .user-badge i {
-            color: var(--accent-color);
-        }
-        
-        .user-badge span {
-            color: white;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        
-        /* ============================================
-           STAT CARDS - CLEAN & READABLE NUMBERS
-           ============================================ */
+        /* ACCOUNTING STAT CARDS */
         .stat-card {
-            color: white;
-            padding: 28px 25px;
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            color: white; padding: 25px; border-radius: 20px; position: relative;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
         }
-        
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-        }
-        
+        .stat-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
         .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            border-radius: 50%;
+            content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%;
         }
         
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: rgba(255,255,255,0.3);
-        }
+        .stat-label { font-size: 0.8rem; font-weight: 600; opacity: 0.95; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-value { font-size: 1.8rem; font-weight: 700; font-family: var(--font-display); line-height: 1.2; font-variant-numeric: tabular-nums; }
+        .stat-sub { font-size: 0.75rem; opacity: 0.8; margin-top: 5px; font-style: italic; }
+        .stat-icon { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 3.5rem; opacity: 0.15; }
         
-        .stat-card.income {
-            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
-        }
+        .bg-asset { background: linear-gradient(135deg, #1565c0 0%, #42a5f5 100%); }
+        .bg-liability { background: linear-gradient(135deg, #c62828 0%, #ef5350 100%); }
+        .bg-equity { background: linear-gradient(135deg, #6a1b9a 0%, #ab47bc 100%); }
+        .bg-revenue { background: linear-gradient(135deg, #2e7d32 0%, #66bb6a 100%); }
+        .bg-expense { background: linear-gradient(135deg, #d84315 0%, #ff7043 100%); }
         
-        .stat-card.expense {
-            background: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
-        }
+        /* SECTION HEADERS */
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin: 25px 0 15px; }
+        .section-title { font-size: 1.3rem; font-weight: 700; color: #1a1a1a; display: flex; align-items: center; gap: 12px; }
+        .section-title i { color: var(--primary-color); font-size: 1.4rem; }
+        .section-badge { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; padding: 8px 18px; border-radius: 25px; font-size: 0.85rem; font-weight: 600; }
+        .section-badge.warning { background: linear-gradient(135deg, #ff9a56, #ff6f00); }
         
-        .stat-card.balance {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        /* STATUS & PIC CARDS (Existing Styles Preserved) */
+        .status-card, .pic-card {
+            border-radius: 20px; padding: 25px; color: white; position: relative;
+            overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transition: all 0.4s ease; height: 100%;
         }
-        
-        .stat-label {
-            font-size: 0.85rem;
-            font-weight: 500;
-            opacity: 0.95;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        
-        .stat-value {
-            font-size: 2rem;
-            font-weight: 700;
-            font-family: var(--font-display);
-            letter-spacing: 0;
-            line-height: 1.2;
-            /* Angka yang mudah dibaca */
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .stat-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 4rem;
-            opacity: 0.2;
-        }
-        
-        /* ============================================
-           SECTION HEADERS
-           ============================================ */
-        .section-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            margin-top: 10px;
-        }
-        
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: #1a1a1a;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-family: var(--font-main);
-        }
-        
-        .section-title i {
-            color: var(--primary-color);
-            font-size: 1.4rem;
-        }
-        
-        .section-badge {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            padding: 8px 18px;
-            border-radius: 25px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
-        }
-        
-        .section-badge.warning {
-            background: linear-gradient(135deg, #ff9a56, #ff6f00);
-            box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
-        }
-        
-        /* ============================================
-           STATUS CARDS (OPEN/SOLVED)
-           ============================================ */
-        .status-card {
-            border-radius: 20px;
-            padding: 30px;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            transition: all 0.4s ease;
-            height: 100%;
-        }
-        
-        .status-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-        }
-        
-        .status-card::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -30%;
-            width: 150%;
-            height: 150%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        
-        .status-open {
-            background: linear-gradient(135deg, #ff9a56 0%, #ff6f00 100%);
-        }
-        
-        .status-solved {
-            background: linear-gradient(135deg, #56ab2f 0%, #00c853 100%);
-        }
-        
-        .status-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .status-title i {
-            font-size: 2rem;
-            background: rgba(255,255,255,0.25);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .status-stats {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .status-stat-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(255,255,255,0.2);
-            padding: 15px 18px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .status-stat-label {
-            font-size: 0.9rem;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .status-stat-label i {
-            font-size: 1.1rem;
-        }
-        
-        .status-stat-value {
-            font-size: 1.25rem;
-            font-weight: 700;
-            font-family: var(--font-display);
-            /* Angka mudah dibaca */
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 0;
-        }
-        
-        .status-total {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 2px solid rgba(255,255,255,0.3);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .status-total-label {
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .status-total-value {
-            font-size: 1.5rem;
-            font-weight: 800;
-            font-family: var(--font-display);
-            /* Angka mudah dibaca */
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 0;
-        }
-        
-        /* ============================================
-           PIC CARDS
-           ============================================ */
-        .pic-card {
-            border-radius: 20px;
-            padding: 22px;
-            color: white;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            transition: all 0.4s ease;
-            height: 100%;
-        }
-        
-        .pic-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
-        }
-        
-        .pic-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-            border-radius: 50%;
-        }
+        .status-card:hover, .pic-card:hover { transform: translateY(-5px); }
+        .status-open { background: linear-gradient(135deg, #ff9a56 0%, #ff6f00 100%); }
+        .status-solved { background: linear-gradient(135deg, #56ab2f 0%, #00c853 100%); }
         
         .pic-sidik { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
         .pic-adit { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
         .pic-palung { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
         .pic-other { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
         
-        .pic-name {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-            z-index: 1;
-        }
+        .pic-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 12px; z-index: 1; position: relative; }
+        .pic-photo { width: 45px; height: 45px; border-radius: 50%; border: 3px solid rgba(255,255,255,0.9); object-fit: cover; }
+        .pic-count-badge { margin-left: auto; background: rgba(255,255,255,0.95); color: #333; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 700; }
         
-        .pic-photo {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid rgba(255,255,255,0.9);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            background: rgba(255,255,255,0.3);
-            flex-shrink: 0;
-        }
+        .pic-stats { display: flex; gap: 10px; position: relative; z-index: 1; }
+        .pic-stat-item { flex: 1; background: rgba(255,255,255,0.2); padding: 10px; border-radius: 12px; backdrop-filter: blur(10px); }
+        .pic-stat-label { font-size: 0.7rem; opacity: 0.95; margin-bottom: 4px; text-transform: uppercase; }
+        .pic-stat-value { font-size: 0.95rem; font-weight: 700; font-family: var(--font-display); }
         
-        .pic-name .pic-count-badge {
-            margin-left: auto;
-            background: rgba(255,255,255,0.95);
-            color: #333;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
+        .status-stat-row { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.2); padding: 12px 15px; border-radius: 12px; margin-bottom: 10px; }
+        .status-total { margin-top: 15px; padding-top: 15px; border-top: 2px solid rgba(255,255,255,0.3); display: flex; justify-content: space-between; align-items: center; }
         
-        .pic-stats {
-            display: flex;
-            gap: 10px;
-            position: relative;
-            z-index: 1;
-        }
+        /* CARDS & TABLE */
+        .card { border: none; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.08); background: white; }
+        .table thead { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
+        .table thead th { font-weight: 600; font-size: 0.85rem; text-transform: uppercase; padding: 15px 12px; border: none; }
+        .table tbody td { padding: 14px 12px; vertical-align: middle; font-size: 0.9rem; border-bottom: 1px solid #f0f0f0; }
         
-        .pic-stat-item {
-            flex: 1;
-            background: rgba(255,255,255,0.2);
-            padding: 12px;
-            border-radius: 12px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
+        .badge-status { padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; display: inline-block; min-width: 80px; text-align: center; }
+        .badge-open { background: linear-gradient(135deg, #ff9a56, #ff6f00); color: white; }
+        .badge-solved { background: linear-gradient(135deg, #56ab2f, #00c853); color: white; }
         
-        .pic-stat-label {
-            font-size: 0.7rem;
-            opacity: 0.95;
-            margin-bottom: 6px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        .text-success-custom { color: #00c853 !important; font-weight: 700; font-family: var(--font-display); }
+        .text-danger-custom { color: #ff5252 !important; font-weight: 700; font-family: var(--font-display); }
         
-        .pic-stat-value {
-            font-size: 1rem;
-            font-weight: 700;
-            font-family: var(--font-display);
-            /* Angka mudah dibaca */
-            font-variant-numeric: tabular-nums;
-            letter-spacing: 0;
-        }
+        /* FORMS */
+        .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border: none; font-weight: 600; padding: 12px; border-radius: 12px; }
+        .form-control, .form-select { border-radius: 10px; border: 2px solid #e0e0e0; padding: 10px 14px; }
+        .form-control:focus, .form-select:focus { border-color: var(--secondary-color); box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.2); }
         
-        /* ============================================
-           CARDS & TABLE
-           ============================================ */
-        .card {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            background: white;
-        }
+        /* LOGIN */
+        .login-container { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d3320 0%, #1b5e20 50%, #2e7d32 100%); position: relative; }
+        .login-box { background: white; padding: 45px 40px; border-radius: 25px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-width: 450px; width: 90%; z-index: 1; }
         
-        .card-title {
-            font-weight: 700;
-            color: #1a1a1a;
-            font-size: 1.15rem;
-        }
+        .hidden { display: none !important; }
+        .loading { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3); border-radius: 50%; border-top-color: white; animation: spin 1s ease-in-out infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
-        .table {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-        }
+        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 1055; }
         
-        .table thead {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-        }
-        
-        .table thead th {
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 15px 12px;
-            border: none;
-        }
-        
-        .table tbody td {
-            padding: 14px 12px;
-            vertical-align: middle;
-            font-size: 0.9rem;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .badge-status {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            display: inline-block;
-            min-width: 80px;
-            text-align: center;
-        }
-        
-        .badge-open {
-            background: linear-gradient(135deg, #ff9a56, #ff6f00);
-            color: white;
-        }
-        
-        .badge-solved {
-            background: linear-gradient(135deg, #56ab2f, #00c853);
-            color: white;
-        }
-        
-        .text-success-custom {
-            color: #00c853 !important;
-            font-weight: 700;
-            font-family: var(--font-display);
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .text-danger-custom {
-            color: #ff5252 !important;
-            font-weight: 700;
-            font-family: var(--font-display);
-            font-variant-numeric: tabular-nums;
-        }
-        
-        /* ============================================
-           BUTTONS & FORMS
-           ============================================ */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            border: none;
-            font-weight: 600;
-            padding: 12px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(27, 94, 32, 0.4);
-        }
-        
-        .form-control, .form-select {
-            border-radius: 10px;
-            border: 2px solid #e0e0e0;
-            padding: 10px 14px;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            border-color: var(--secondary-color);
-            box-shadow: 0 0 0 0.2rem rgba(76, 175, 80, 0.2);
-        }
-        
-        .form-label {
-            font-weight: 600;
-            font-size: 0.85rem;
-            color: #555;
-            margin-bottom: 6px;
-        }
-        
-        /* ============================================
-           LOGIN PAGE
-           ============================================ */
-        .login-container {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0d3320 0%, #1b5e20 50%, #2e7d32 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .login-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-        
-        .login-box {
-            background: white;
-            padding: 45px 40px;
-            border-radius: 25px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            max-width: 450px;
-            width: 90%;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .logo-container img {
-            max-width: 120px;
-            height: auto;
-        }
-        
-        /* ============================================
-           UTILITIES
-           ============================================ */
-        .hidden {
-            display: none !important;
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1055;
-        }
-        
-        .brand-small {
-            font-size: 11px;
-            opacity: 0.9;
-        }
-        
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
         @media (max-width: 768px) {
-            .stat-value {
-                font-size: 1.6rem;
-            }
-            
-            .navbar-brand .brand-name {
-                font-size: 1.3rem;
-            }
-            
-            .navbar-brand .logo-wrapper {
-                width: 45px;
-                height: 45px;
-            }
-            
-            .status-card, .pic-card {
-                padding: 20px;
-            }
-            
-            .status-total-value {
-                font-size: 1.3rem;
-            }
+            .stat-value { font-size: 1.4rem; }
+            .navbar-brand .brand-name { font-size: 1.3rem; }
         }
     </style>
 </head>
@@ -704,15 +167,12 @@
     <div id="loginPage" class="login-container">
         <div class="login-box">
             <div class="text-center mb-4">
-                <div class="logo-container">
-                    <img src="logo.png" alt="ChiRAJ Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzRjYWY1MCIvPjx0ZXh0IHg9IjUwIiB5PSI2MCIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4='">
+                <div class="logo-container mx-auto mb-3" style="width:80px; height:80px; background:#4caf50; border-radius:50%; display:flex; align-items:center; justify-content:center;">
+                    <span style="font-size:40px; color:white; font-weight:bold;">C</span>
                 </div>
-                <h2 class="fw-bold mb-2" style="color: white; font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 1px;">ChiRAJ</h2>
-                <p class="text-muted mb-1" style="font-weight: 500;">Cermat Hitung Rezeki Amanah Jaya</p>
-                <p class="text-muted small mb-1">CV REZEKI AMANAH JAYA Group</p>
-                <p class="text-muted small fst-italic">Supplier & Waste Solution Partner</p>
+                <h2 class="fw-bold mb-2" style="color: var(--primary-color); font-family: var(--font-display);">ChiRAJ</h2>
+                <p class="text-muted small">CV REZEKI AMANAH JAYA Group</p>
             </div>
-            
             <form id="loginForm">
                 <div class="mb-3">
                     <label class="form-label">Email</label>
@@ -722,11 +182,8 @@
                     <label class="form-label">Password</label>
                     <input type="password" class="form-control" id="loginPassword" required placeholder="••••••••">
                 </div>
-                <button type="submit" class="btn btn-primary w-100 py-2">
-                    <i class="fas fa-sign-in-alt me-2"></i>Login
-                </button>
+                <button type="submit" class="btn btn-primary w-100 py-2"><i class="fas fa-sign-in-alt me-2"></i>Login</button>
             </form>
-            
             <div class="text-center mt-3">
                 <small class="text-muted">Belum punya akun? <a href="#" id="showRegister" style="color: var(--primary-color); font-weight: 600;">Daftar</a></small>
             </div>
@@ -737,31 +194,14 @@
     <div id="registerPage" class="login-container hidden">
         <div class="login-box">
             <div class="text-center mb-4">
-                <div class="logo-container">
-                    <img src="logo.png" alt="ChiRAJ Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0NSIgZmlsbD0iIzRjYWY1MCIvPjx0ZXh0IHg9IjUwIiB5PSI2MCIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD48L3N2Zz4='">
-                </div>
-                <h2 class="fw-bold mb-2" style="color: var(--primary-color); font-family: var(--font-display); font-size: 2.2rem; letter-spacing: 1px;">ChiRAJ</h2>
-                <p class="text-muted mb-1" style="font-weight: 500;">Cermat Hitung Rezeki Amanah Jaya</p>
+                <h2 class="fw-bold mb-2" style="color: var(--primary-color); font-family: var(--font-display);">Daftar Akun</h2>
             </div>
-            
             <form id="registerForm">
-                <div class="mb-3">
-                    <label class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-control" id="registerName" required placeholder="Nama Lengkap">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" id="registerEmail" required placeholder="email@example.com">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" id="registerPassword" required placeholder="Minimal 6 karakter" minlength="6">
-                </div>
-                <button type="submit" class="btn btn-primary w-100 py-2">
-                    <i class="fas fa-user-plus me-2"></i>Daftar
-                </button>
+                <div class="mb-3"><label class="form-label">Nama Lengkap</label><input type="text" class="form-control" id="registerName" required></div>
+                <div class="mb-3"><label class="form-label">Email</label><input type="email" class="form-control" id="registerEmail" required></div>
+                <div class="mb-3"><label class="form-label">Password</label><input type="password" class="form-control" id="registerPassword" required minlength="6"></div>
+                <button type="submit" class="btn btn-primary w-100 py-2"><i class="fas fa-user-plus me-2"></i>Daftar</button>
             </form>
-            
             <div class="text-center mt-3">
                 <small class="text-muted">Sudah punya akun? <a href="#" id="showLogin" style="color: var(--primary-color); font-weight: 600;">Login</a></small>
             </div>
@@ -770,130 +210,117 @@
 
     <!-- MAIN DASHBOARD -->
     <div id="dashboardPage" class="hidden">
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
             <div class="container">
                 <a class="navbar-brand" href="#">
-                    <div class="logo-wrapper">
-                        <img src="logo.png" alt="ChiRAJ Logo" onerror="this.style.display='none'">
-                    </div>
+                    <div class="logo-wrapper"><img src="logo.png" alt="Logo" onerror="this.style.display='none'"></div>
                     <div class="brand-text">
                         <div class="brand-name">ChiRAJ</div>
-                        <div class="brand-tagline">Cermat Hitung RAJ</div>
+                        <div class="brand-tagline">Finance & Accounting</div>
                     </div>
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto align-items-center">
-                        <li class="nav-item me-3">
-                            <div class="user-badge">
-                                <i class="fas fa-user-circle"></i>
-                                <span id="userName">User</span>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" id="logoutBtn">
-                                <i class="fas fa-sign-out-alt me-2"></i>Logout
-                            </a>
-                        </li>
+                        <li class="nav-item me-3"><div class="user-badge"><i class="fas fa-user-circle"></i><span id="userName">User</span></div></li>
+                        <li class="nav-item"><a class="nav-link" href="#" id="logoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
 
         <div class="container py-4">
-            <!-- Statistics Cards -->
-            <div class="row mb-4">
-                <div class="col-md-4 mb-3">
-                    <div class="stat-card income">
-                        <div class="stat-label">Total Pemasukan</div>
-                        <div class="stat-value" id="totalIncome">Rp 0</div>
+            
+            <!-- 5 ELEMENTS OF ACCOUNTING STATS -->
+            <div class="row mb-4 g-3">
+                <!-- Aset -->
+                <div class="col-md-4 col-lg-2-4">
+                    <div class="stat-card bg-asset">
+                        <div class="stat-label">Aset (Harta)</div>
+                        <div class="stat-value" id="acc-asset">Rp 0</div>
+                        <div class="stat-sub">Kas + Piutang</div>
+                        <i class="fas fa-landmark stat-icon"></i>
+                    </div>
+                </div>
+                <!-- Kewajiban -->
+                <div class="col-md-4 col-lg-2-4">
+                    <div class="stat-card bg-liability">
+                        <div class="stat-label">Kewajiban (Utang)</div>
+                        <div class="stat-value" id="acc-liability">Rp 0</div>
+                        <div class="stat-sub">Beban Belum Bayar</div>
+                        <i class="fas fa-file-invoice-dollar stat-icon"></i>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="col-md-4 col-lg-2-4">
+                    <div class="stat-card bg-equity">
+                        <div class="stat-label">Modal (Ekuitas)</div>
+                        <div class="stat-value" id="acc-equity">Rp 0</div>
+                        <div class="stat-sub">Kekayaan Bersih</div>
+                        <i class="fas fa-balance-scale stat-icon"></i>
+                    </div>
+                </div>
+                <!-- Pendapatan -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card bg-revenue">
+                        <div class="stat-label">Pendapatan (Revenue)</div>
+                        <div class="stat-value" id="acc-revenue">Rp 0</div>
+                        <div class="stat-sub">Total Pemasukan</div>
                         <i class="fas fa-arrow-down stat-icon"></i>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <div class="stat-card expense">
-                        <div class="stat-label">Total Pengeluaran</div>
-                        <div class="stat-value" id="totalExpense">Rp 0</div>
+                <!-- Beban -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="stat-card bg-expense">
+                        <div class="stat-label">Beban (Expenses)</div>
+                        <div class="stat-value" id="acc-expense">Rp 0</div>
+                        <div class="stat-sub">Total Pengeluaran</div>
                         <i class="fas fa-arrow-up stat-icon"></i>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <div class="stat-card balance">
-                        <div class="stat-label">Saldo Saat Ini</div>
-                        <div class="stat-value" id="currentBalance">Rp 0</div>
-                        <i class="fas fa-wallet stat-icon"></i>
                     </div>
                 </div>
             </div>
 
-            <!-- Status Keuangan: Open vs Solved -->
+            <!-- Status Keuangan: Open vs Solved (Retained for Operational Tracking) -->
             <div class="section-header">
-                <div class="section-title">
-                    <i class="fas fa-exchange-alt"></i>
-                    Status Pencairan Dana
-                </div>
+                <div class="section-title"><i class="fas fa-exchange-alt"></i> Status Pencairan Dana</div>
                 <div class="section-badge" id="totalTransactions">0 Transaksi</div>
             </div>
             
             <div class="row mb-4">
-                <!-- Open Card -->
                 <div class="col-md-6 mb-3">
                     <div class="status-card status-open">
-                        <div class="status-title">
-                            <i class="fas fa-clock"></i>
-                            <span>OPEN (Belum Cair)</span>
-                        </div>
+                        <div class="status-title"><i class="fas fa-clock"></i> <span>OPEN (Belum Cair)</span></div>
                         <div class="status-stats">
                             <div class="status-stat-row">
-                                <div class="status-stat-label">
-                                    <i class="fas fa-arrow-down"></i> Pemasukan Belum Masuk
-                                </div>
+                                <div class="status-stat-label"><i class="fas fa-arrow-down"></i> Piutang (Income)</div>
                                 <div class="status-stat-value" id="open-income">Rp 0</div>
                             </div>
                             <div class="status-stat-row">
-                                <div class="status-stat-label">
-                                    <i class="fas fa-arrow-up"></i> Pengeluaran Belum Diganti
-                                </div>
+                                <div class="status-stat-label"><i class="fas fa-arrow-up"></i> Utang (Expense)</div>
                                 <div class="status-stat-value" id="open-expense">Rp 0</div>
                             </div>
                         </div>
                         <div class="status-total">
-                            <div class="status-total-label">
-                                <i class="fas fa-balance-scale"></i> Net Open
-                            </div>
+                            <div class="status-total-label"><i class="fas fa-balance-scale"></i> Net Open</div>
                             <div class="status-total-value" id="open-net">Rp 0</div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Solved Card -->
                 <div class="col-md-6 mb-3">
                     <div class="status-card status-solved">
-                        <div class="status-title">
-                            <i class="fas fa-check-circle"></i>
-                            <span>SOLVED (Sudah Cair)</span>
-                        </div>
+                        <div class="status-title"><i class="fas fa-check-circle"></i> <span>SOLVED (Sudah Cair)</span></div>
                         <div class="status-stats">
                             <div class="status-stat-row">
-                                <div class="status-stat-label">
-                                    <i class="fas fa-arrow-down"></i> Pemasukan Sudah Masuk
-                                </div>
+                                <div class="status-stat-label"><i class="fas fa-arrow-down"></i> Pendapatan Tunai</div>
                                 <div class="status-stat-value" id="solved-income">Rp 0</div>
                             </div>
                             <div class="status-stat-row">
-                                <div class="status-stat-label">
-                                    <i class="fas fa-arrow-up"></i> Pengeluaran Sudah Diganti
-                                </div>
+                                <div class="status-stat-label"><i class="fas fa-arrow-up"></i> Beban Terbayar</div>
                                 <div class="status-stat-value" id="solved-expense">Rp 0</div>
                             </div>
                         </div>
                         <div class="status-total">
-                            <div class="status-total-label">
-                                <i class="fas fa-balance-scale"></i> Net Solved
-                            </div>
+                            <div class="status-total-label"><i class="fas fa-balance-scale"></i> Net Solved</div>
                             <div class="status-total-value" id="solved-net">Rp 0</div>
                         </div>
                     </div>
@@ -902,87 +329,44 @@
 
             <!-- Breakdown Open per PIC -->
             <div class="section-header">
-                <div class="section-title">
-                    <i class="fas fa-users"></i>
-                    Detail Open per PIC
-                </div>
+                <div class="section-title"><i class="fas fa-users"></i> Detail Open per PIC</div>
                 <div class="section-badge warning" id="open-count">0 Item Open</div>
             </div>
             
             <div class="row mb-4">
                 <div class="col-md-6 col-lg-3 mb-3">
                     <div class="pic-card pic-sidik">
-                        <div class="pic-name">
-                            <img src="pic-sidik.png" alt="Sidik" class="pic-photo" onerror="this.style.display='none'">
-                            <span>Sidik</span>
-                            <span class="pic-count-badge" id="sidik-open-count">0</span>
-                        </div>
+                        <div class="pic-name"><img src="pic-sidik.png" class="pic-photo" onerror="this.style.display='none'"><span>Sidik</span><span class="pic-count-badge" id="sidik-open-count">0</span></div>
                         <div class="pic-stats">
-                            <div class="pic-stat-item">
-                                <div class="pic-stat-label">Pemasukan</div>
-                                <div class="pic-stat-value" id="pic-sidik-open-income">Rp 0</div>
-                            </div>
-                            <div class="pic-stat-item">
-                                <div class="pic-stat-label">Pengeluaran</div>
-                                <div class="pic-stat-value" id="pic-sidik-open-expense">Rp 0</div>
-                            </div>
+                            <div class="pic-stat-item"><div class="pic-stat-label">Piutang</div><div class="pic-stat-value" id="pic-sidik-open-income">Rp 0</div></div>
+                            <div class="pic-stat-item"><div class="pic-stat-label">Utang</div><div class="pic-stat-value" id="pic-sidik-open-expense">Rp 0</div></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                     <div class="pic-card pic-adit">
-                        <div class="pic-name">
-                            <img src="pic-adit.png" alt="Adit" class="pic-photo" onerror="this.style.display='none'">
-                            <span>Adit</span>
-                            <span class="pic-count-badge" id="adit-open-count">0</span>
-                        </div>
+                        <div class="pic-name"><img src="pic-adit.png" class="pic-photo" onerror="this.style.display='none'"><span>Adit</span><span class="pic-count-badge" id="adit-open-count">0</span></div>
                         <div class="pic-stats">
-                            <div class="pic-stat-item">
-                                <div class="pic-stat-label">Pemasukan</div>
-                                <div class="pic-stat-value" id="pic-adit-open-income">Rp 0</div>
-                            </div>
-                            <div class="pic-stat-item">
-                                <div class="pic-stat-label">Pengeluaran</div>
-                                <div class="pic-stat-value" id="pic-adit-open-expense">Rp 0</div>
-                            </div>
+                            <div class="pic-stat-item"><div class="pic-stat-label">Piutang</div><div class="pic-stat-value" id="pic-adit-open-income">Rp 0</div></div>
+                            <div class="pic-stat-item"><div class="pic-stat-label">Utang</div><div class="pic-stat-value" id="pic-adit-open-expense">Rp 0</div></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                     <div class="pic-card pic-palung">
-                        <div class="pic-name">
-                            <img src="pic-palung.png" alt="Palung" class="pic-photo" onerror="this.style.display='none'">
-                            <span>Palung</span>
-                            <span class="pic-count-badge" id="palung-open-count">0</span>
-                        </div>
+                        <div class="pic-name"><img src="pic-palung.png" class="pic-photo" onerror="this.style.display='none'"><span>Palung</span><span class="pic-count-badge" id="palung-open-count">0</span></div>
                         <div class="pic-stats">
-                            <div class="pic-stat-item">
-                                <div class="pic-stat-label">Pemasukan</div>
-                                <div class="pic-stat-value" id="pic-palung-open-income">Rp 0</div>
-                            </div>
-                            <div class="pic-stat-item">
-                                <div class="pic-stat-label">Pengeluaran</div>
-                                <div class="pic-stat-value" id="pic-palung-open-expense">Rp 0</div>
-                            </div>
+                            <div class="pic-stat-item"><div class="pic-stat-label">Piutang</div><div class="pic-stat-value" id="pic-palung-open-income">Rp 0</div></div>
+                            <div class="pic-stat-item"><div class="pic-stat-label">Utang</div><div class="pic-stat-value" id="pic-palung-open-expense">Rp 0</div></div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-3 mb-3">
                     <div class="pic-card pic-other">
-                        <div class="pic-name">
-                            <img src="pic-other.png" alt="Lainnya" class="pic-photo" onerror="this.style.display='none'">
-                            <span>Lainnya</span>
-                            <span class="pic-count-badge" id="other-open-count">0</span>
-                        </div>
+                        <div class="pic-name"><img src="pic-other.png" class="pic-photo" onerror="this.style.display='none'"><span>Lainnya</span><span class="pic-count-badge" id="other-open-count">0</span></div>
                         <div class="pic-stats">
-                            <div class="pic-stat-item">
-                                <div class="pic-stat-label">Pemasukan</div>
-                                <div class="pic-stat-value" id="pic-other-open-income">Rp 0</div>
-                            </div>
-                            <div class="pic-stat-item">
-                                <div class="pic-stat-label">Pengeluaran</div>
-                                <div class="pic-stat-value" id="pic-other-open-expense">Rp 0</div>
-                            </div>
+                            <div class="pic-stat-item"><div class="pic-stat-label">Piutang</div><div class="pic-stat-value" id="pic-other-open-income">Rp 0</div></div>
+                            <div class="pic-stat-item"><div class="pic-stat-label">Utang</div><div class="pic-stat-value" id="pic-other-open-expense">Rp 0</div></div>
                         </div>
                     </div>
                 </div>
@@ -990,44 +374,22 @@
 
             <!-- Chart & Form Row -->
             <div class="row mb-4">
-                <!-- Chart -->
                 <div class="col-lg-8 mb-3">
                     <div class="card p-4">
-                        <h5 class="card-title mb-3">
-                            <i class="fas fa-chart-line me-2" style="color: var(--primary-color);"></i>Grafik Keuangan
-                        </h5>
+                        <h5 class="card-title mb-3"><i class="fas fa-chart-line me-2" style="color: var(--primary-color);"></i>Grafik Keuangan</h5>
                         <canvas id="financeChart" height="120"></canvas>
                     </div>
                 </div>
-
-                <!-- Input Form -->
                 <div class="col-lg-4 mb-3">
                     <div class="card p-4">
-                        <h5 class="card-title mb-3">
-                            <i class="fas fa-plus-circle me-2" style="color: var(--secondary-color);"></i>Tambah Transaksi
-                        </h5>
+                        <h5 class="card-title mb-3"><i class="fas fa-plus-circle me-2" style="color: var(--secondary-color);"></i>Tambah Transaksi</h5>
                         <form id="transactionForm">
-                            <div class="mb-3">
-                                <label class="form-label">Tanggal</label>
-                                <input type="date" class="form-control" id="tanggal" required>
-                            </div>
-                            
+                            <div class="mb-3"><label class="form-label">Tanggal</label><input type="date" class="form-control" id="tanggal" required></div>
                             <div class="row mb-3">
-                                <div class="col-6">
-                                    <label class="form-label">Pemasukan</label>
-                                    <input type="number" class="form-control" id="income" placeholder="0" value="0">
-                                </div>
-                                <div class="col-6">
-                                    <label class="form-label">Pengeluaran</label>
-                                    <input type="number" class="form-control" id="outcome" placeholder="0" value="0">
-                                </div>
+                                <div class="col-6"><label class="form-label">Pendapatan</label><input type="number" class="form-control" id="income" placeholder="0" value="0"></div>
+                                <div class="col-6"><label class="form-label">Beban</label><input type="number" class="form-control" id="outcome" placeholder="0" value="0"></div>
                             </div>
-
-                            <div class="mb-3">
-                                <label class="form-label">Uraian</label>
-                                <textarea class="form-control" id="uraian" rows="2" required placeholder="Keterangan transaksi"></textarea>
-                            </div>
-
+                            <div class="mb-3"><label class="form-label">Uraian</label><textarea class="form-control" id="uraian" rows="2" required placeholder="Keterangan transaksi"></textarea></div>
                             <div class="mb-3">
                                 <label class="form-label">PIC</label>
                                 <select class="form-select" id="pic" required>
@@ -1037,18 +399,14 @@
                                     <option value="Palung">Palung</option>
                                 </select>
                             </div>
-
                             <div class="mb-3">
                                 <label class="form-label">Status</label>
                                 <select class="form-select" id="status" required>
-                                    <option value="Open">Open</option>
-                                    <option value="Solved">Solved</option>
+                                    <option value="Open">Open (Belum Cair)</option>
+                                    <option value="Solved">Solved (Sudah Cair)</option>
                                 </select>
                             </div>
-
-                            <button type="submit" class="btn btn-primary w-100">
-                                <i class="fas fa-save me-2"></i>Simpan Transaksi
-                            </button>
+                            <button type="submit" class="btn btn-primary w-100"><i class="fas fa-save me-2"></i>Simpan Transaksi</button>
                         </form>
                     </div>
                 </div>
@@ -1057,16 +415,13 @@
             <!-- Transactions Table -->
             <div class="card p-4">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h5 class="card-title mb-0">
-                        <i class="fas fa-list me-2" style="color: var(--primary-color);"></i>Riwayat Transaksi
-                    </h5>
+                    <h5 class="card-title mb-0"><i class="fas fa-list me-2" style="color: var(--primary-color);"></i>Riwayat Transaksi</h5>
                     <div class="btn-group">
                         <button class="btn btn-sm btn-outline-success" onclick="filterStatus('all')">Semua</button>
                         <button class="btn btn-sm btn-outline-warning" onclick="filterStatus('Open')">Open</button>
                         <button class="btn btn-sm btn-outline-success" onclick="filterStatus('Solved')">Solved</button>
                     </div>
                 </div>
-                
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <thead>
@@ -1074,8 +429,8 @@
                                 <th>No</th>
                                 <th>Tanggal</th>
                                 <th>Uraian</th>
-                                <th>Pemasukan</th>
-                                <th>Pengeluaran</th>
+                                <th>Pendapatan</th>
+                                <th>Beban</th>
                                 <th>Saldo</th>
                                 <th>PIC</th>
                                 <th>Status</th>
@@ -1083,12 +438,7 @@
                             </tr>
                         </thead>
                         <tbody id="transactionTable">
-                            <tr>
-                                <td colspan="9" class="text-center text-muted">
-                                    <div class="spinner-border spinner-border-sm me-2"></div>
-                                    Memuat data...
-                                </td>
-                            </tr>
+                            <tr><td colspan="9" class="text-center text-muted"><div class="spinner-border spinner-border-sm me-2"></div>Memuat data...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -1096,7 +446,6 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div class="toast-container" id="toastContainer"></div>
 
     <!-- Firebase SDK -->
@@ -1143,57 +492,31 @@
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
             try {
-                await auth.signInWithEmailAndPassword(email, password);
+                await auth.signInWithEmailAndPassword(document.getElementById('loginEmail').value, document.getElementById('loginPassword').value);
                 showToast('Login berhasil!', 'success');
-            } catch (error) {
-                showToast('Login gagal: ' + error.message, 'error');
-            }
+            } catch (error) { showToast('Login gagal: ' + error.message, 'error'); }
         });
 
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const name = document.getElementById('registerName').value;
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            
             try {
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                await userCredential.user.updateProfile({ displayName: name });
-                showToast('Registrasi berhasil! Silakan login.', 'success');
+                const uc = await auth.createUserWithEmailAndPassword(document.getElementById('registerEmail').value, document.getElementById('registerPassword').value);
+                await uc.user.updateProfile({ displayName: document.getElementById('registerName').value });
+                showToast('Registrasi berhasil!', 'success');
                 document.getElementById('showLogin').click();
-            } catch (error) {
-                showToast('Registrasi gagal: ' + error.message, 'error');
-            }
+            } catch (error) { showToast('Registrasi gagal: ' + error.message, 'error'); }
         });
 
-        document.getElementById('logoutBtn').addEventListener('click', () => {
-            auth.signOut();
-            showToast('Logout berhasil', 'info');
-        });
-
-        document.getElementById('showRegister').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('loginPage').classList.add('hidden');
-            document.getElementById('registerPage').classList.remove('hidden');
-        });
-
-        document.getElementById('showLogin').addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('registerPage').classList.add('hidden');
-            document.getElementById('loginPage').classList.remove('hidden');
-        });
+        document.getElementById('logoutBtn').addEventListener('click', () => { auth.signOut(); showToast('Logout berhasil', 'info'); });
+        document.getElementById('showRegister').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('loginPage').classList.add('hidden'); document.getElementById('registerPage').classList.remove('hidden'); });
+        document.getElementById('showLogin').addEventListener('click', (e) => { e.preventDefault(); document.getElementById('registerPage').classList.add('hidden'); document.getElementById('loginPage').classList.remove('hidden'); });
 
         async function loadAllData() {
             try {
-                showToast('Memuat data dari spreadsheet...', 'info');
+                showToast('Memuat data...', 'info');
                 const sheetResponse = await fetch(APPS_SCRIPT_URL + '?sheet=Keuangan');
                 const sheetData = await sheetResponse.json();
-                
-                console.log('Data dari Sheets:', sheetData);
                 
                 allTransactions = sheetData.map((row, index) => {
                     const parseAmount = (value) => {
@@ -1205,52 +528,40 @@
                     
                     return {
                         id: 'sheet_' + index,
-                        type: 'keuangan',
-                        no: row.No || row['No'] || (index + 1),
-                        tanggal: row.Tanggal || row['Tanggal'] || '-',
-                        income: parseAmount(row.Income) || parseAmount(row['Income']) || 0,
-                        outcome: parseAmount(row.Outcome) || parseAmount(row['Outcome']) || 0,
-                        uraian: row.Uraian || row['Uraian'] || '-',
-                        pic: row.PIC || row['PIC'] || '-',
-                        status: (row.Status || row['Status'] || 'Open').toString().toLowerCase() === 'solved' ? 'Solved' : 'Open',
-                        saldo: parseAmount(row.Saldo) || parseAmount(row['Saldo']) || 0,
-                        createdByName: row['Dibuat Oleh'] || row.createdByName || '-',
-                        createdByEmail: row['Email User'] || row.createdByEmail || '-',
+                        no: row.No || (index + 1),
+                        tanggal: row.Tanggal || '-',
+                        income: parseAmount(row.Income) || 0,
+                        outcome: parseAmount(row.Outcome) || 0,
+                        uraian: row.Uraian || '-',
+                        pic: row.PIC || '-',
+                        status: (row.Status || 'Open').toString().toLowerCase() === 'solved' ? 'Solved' : 'Open',
+                        saldo: parseAmount(row.Saldo) || 0,
+                        createdByName: row['Dibuat Oleh'] || '-',
                         fromSheet: true
                     };
                 });
                 
                 updateUI();
-                
-                if (allTransactions.length > 0) {
-                    showToast('Berhasil memuat ' + allTransactions.length + ' transaksi', 'success');
-                } else {
-                    showToast('Belum ada data transaksi', 'info');
-                }
-                
+                if (allTransactions.length > 0) showToast('Data berhasil dimuat', 'success');
             } catch (error) {
-                console.error('Error loading data:', error);
+                console.error(error);
                 showToast('Gagal memuat data: ' + error.message, 'error');
             }
         }
 
         document.getElementById('transactionForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
             const btn = e.target.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
             btn.innerHTML = '<span class="loading"></span> Menyimpan...';
             btn.disabled = true;
 
             try {
-                const income = parseFloat(document.getElementById('income').value) || 0;
-                const outcome = parseFloat(document.getElementById('outcome').value) || 0;
-                
                 const data = {
                     type: 'keuangan',
                     tanggal: document.getElementById('tanggal').value,
-                    income: income,
-                    outcome: outcome,
+                    income: parseFloat(document.getElementById('income').value) || 0,
+                    outcome: parseFloat(document.getElementById('outcome').value) || 0,
                     uraian: document.getElementById('uraian').value,
                     pic: document.getElementById('pic').value,
                     status: document.getElementById('status').value,
@@ -1258,31 +569,15 @@
                     createdByEmail: currentUser.email
                 };
 
-                await db.collection('transaksi').add({
-                    ...data,
-                    timestamp: new Date().toISOString(),
-                    createdBy: currentUser.uid
-                });
+                await db.collection('transaksi').add({ ...data, timestamp: new Date().toISOString(), createdBy: currentUser.uid });
+                await fetch(APPS_SCRIPT_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
 
-                await fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-
-                showToast('Transaksi berhasil disimpan!', 'success');
+                showToast('Transaksi tersimpan!', 'success');
                 document.getElementById('transactionForm').reset();
                 document.getElementById('tanggal').valueAsDate = new Date();
-                
                 await loadAllData();
-                
-            } catch (error) {
-                showToast('Gagal menyimpan: ' + error.message, 'error');
-            } finally {
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-            }
+            } catch (error) { showToast('Gagal menyimpan: ' + error.message, 'error'); } 
+            finally { btn.innerHTML = originalText; btn.disabled = false; }
         });
 
         function updateUI() {
@@ -1294,20 +589,49 @@
         }
 
         function updateStats() {
-            const totalIncome = allTransactions.reduce((sum, t) => sum + (t.income || 0), 0);
+            // Perhitungan Dasar
+            const totalRevenue = allTransactions.reduce((sum, t) => sum + (t.income || 0), 0);
             const totalExpense = allTransactions.reduce((sum, t) => sum + (t.outcome || 0), 0);
-            const balance = totalIncome - totalExpense;
+            
+            // Perhitungan Open/Solved untuk Mapping Akuntansi
+            let openIncome = 0, openExpense = 0;
+            let solvedIncome = 0, solvedExpense = 0;
 
-            document.getElementById('totalIncome').textContent = formatRupiah(totalIncome);
-            document.getElementById('totalExpense').textContent = formatRupiah(totalExpense);
-            document.getElementById('currentBalance').textContent = formatRupiah(balance);
+            allTransactions.forEach(t => {
+                if (t.status === 'Open') {
+                    openIncome += t.income || 0;
+                    openExpense += t.outcome || 0;
+                } else {
+                    solvedIncome += t.income || 0;
+                    solvedExpense += t.outcome || 0;
+                }
+            });
+
+            // LOGIKA AKUNTANSI:
+            // 1. Aset = Kas (Solved Net) + Piutang (Open Income)
+            const cashBalance = solvedIncome - solvedExpense; 
+            const accountsReceivable = openIncome;
+            const totalAssets = cashBalance + accountsReceivable;
+
+            // 2. Kewajiban = Utang Usaha (Open Expense / Beban yang belum dibayar)
+            const totalLiabilities = openExpense;
+
+            // 3. Modal = Aset - Kewajiban (Atau bisa juga dihitung sebagai Retained Earnings)
+            const totalEquity = totalAssets - totalLiabilities;
+
+            // Update UI Elements
+            document.getElementById('acc-asset').textContent = formatRupiah(totalAssets);
+            document.getElementById('acc-liability').textContent = formatRupiah(totalLiabilities);
+            document.getElementById('acc-equity').textContent = formatRupiah(totalEquity);
+            document.getElementById('acc-revenue').textContent = formatRupiah(totalRevenue);
+            document.getElementById('acc-expense').textContent = formatRupiah(totalExpense);
             document.getElementById('totalTransactions').textContent = allTransactions.length + ' Transaksi';
         }
 
         function updateStatusBreakdown() {
             let openIncome = 0, openExpense = 0;
             let solvedIncome = 0, solvedExpense = 0;
-            let openCount = 0, solvedCount = 0;
+            let openCount = 0;
 
             allTransactions.forEach(t => {
                 if (t.status === 'Open') {
@@ -1317,7 +641,6 @@
                 } else {
                     solvedIncome += t.income || 0;
                     solvedExpense += t.outcome || 0;
-                    solvedCount++;
                 }
             });
 
@@ -1333,77 +656,35 @@
         }
 
         function updateOpenPerPIC() {
-            const picTotals = {
-                'Sidik': { income: 0, expense: 0, count: 0 },
-                'Adit': { income: 0, expense: 0, count: 0 },
-                'Palung': { income: 0, expense: 0, count: 0 },
-                'Other': { income: 0, expense: 0, count: 0 }
-            };
-
-            const openTransactions = allTransactions.filter(t => t.status === 'Open');
-
-            openTransactions.forEach(t => {
-                const pic = (t.pic || '').toString().trim();
-                const income = t.income || 0;
-                const expense = t.outcome || 0;
-
-                if (pic.toLowerCase().includes('sidik')) {
-                    picTotals['Sidik'].income += income;
-                    picTotals['Sidik'].expense += expense;
-                    picTotals['Sidik'].count++;
-                } else if (pic.toLowerCase().includes('adit')) {
-                    picTotals['Adit'].income += income;
-                    picTotals['Adit'].expense += expense;
-                    picTotals['Adit'].count++;
-                } else if (pic.toLowerCase().includes('palung')) {
-                    picTotals['Palung'].income += income;
-                    picTotals['Palung'].expense += expense;
-                    picTotals['Palung'].count++;
-                } else if (pic && pic !== '-') {
-                    picTotals['Other'].income += income;
-                    picTotals['Other'].expense += expense;
-                    picTotals['Other'].count++;
+            const picTotals = { 'Sidik': { i: 0, e: 0, c: 0 }, 'Adit': { i: 0, e: 0, c: 0 }, 'Palung': { i: 0, e: 0, c: 0 }, 'Other': { i: 0, e: 0, c: 0 } };
+            allTransactions.filter(t => t.status === 'Open').forEach(t => {
+                const pic = (t.pic || '').toString().trim().toLowerCase();
+                const key = pic.includes('sidik') ? 'Sidik' : pic.includes('adit') ? 'Adit' : pic.includes('palung') ? 'Palung' : (t.pic && t.pic !== '-') ? 'Other' : null;
+                if (key) {
+                    picTotals[key].i += t.income || 0;
+                    picTotals[key].e += t.outcome || 0;
+                    picTotals[key].c++;
                 }
             });
 
-            document.getElementById('pic-sidik-open-income').textContent = formatRupiah(picTotals['Sidik'].income);
-            document.getElementById('pic-sidik-open-expense').textContent = formatRupiah(picTotals['Sidik'].expense);
-            document.getElementById('sidik-open-count').textContent = picTotals['Sidik'].count;
-            
-            document.getElementById('pic-adit-open-income').textContent = formatRupiah(picTotals['Adit'].income);
-            document.getElementById('pic-adit-open-expense').textContent = formatRupiah(picTotals['Adit'].expense);
-            document.getElementById('adit-open-count').textContent = picTotals['Adit'].count;
-            
-            document.getElementById('pic-palung-open-income').textContent = formatRupiah(picTotals['Palung'].income);
-            document.getElementById('pic-palung-open-expense').textContent = formatRupiah(picTotals['Palung'].expense);
-            document.getElementById('palung-open-count').textContent = picTotals['Palung'].count;
-            
-            document.getElementById('pic-other-open-income').textContent = formatRupiah(picTotals['Other'].income);
-            document.getElementById('pic-other-open-expense').textContent = formatRupiah(picTotals['Other'].expense);
-            document.getElementById('other-open-count').textContent = picTotals['Other'].count;
+            ['Sidik', 'Adit', 'Palung', 'Other'].forEach(k => {
+                const lk = k.toLowerCase();
+                document.getElementById(`pic-${lk}-open-income`).textContent = formatRupiah(picTotals[k].i);
+                document.getElementById(`pic-${lk}-open-expense`).textContent = formatRupiah(picTotals[k].e);
+                document.getElementById(`${lk}-open-count`).textContent = picTotals[k].c;
+            });
         }
 
         function updateTable(filteredData = null) {
             const data = filteredData || allTransactions;
             const tbody = document.getElementById('transactionTable');
-            
-            if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Belum ada transaksi</td></tr>';
-                return;
-            }
+            if (data.length === 0) { tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Belum ada transaksi</td></tr>'; return; }
 
-            const sortedData = [...data].sort((a, b) => {
-                const dateA = new Date(a.tanggal || '1970-01-01');
-                const dateB = new Date(b.tanggal || '1970-01-01');
-                return dateA - dateB;
-            });
-            
+            const sortedData = [...data].sort((a, b) => new Date(a.tanggal || '1970-01-01') - new Date(b.tanggal || '1970-01-01'));
             let saldo = 0;
             tbody.innerHTML = sortedData.map((t, index) => {
-                saldo = saldo + (t.income || 0) - (t.outcome || 0);
+                saldo += (t.income || 0) - (t.outcome || 0);
                 const statusClass = t.status === 'Open' ? 'badge-open' : 'badge-solved';
-                const statusText = t.status || 'Open';
-                
                 return `
                     <tr>
                         <td>${t.no || (index + 1)}</td>
@@ -1413,152 +694,52 @@
                         <td class="text-danger-custom">${t.outcome ? formatRupiah(t.outcome) : '-'}</td>
                         <td class="fw-bold">${formatRupiah(saldo)}</td>
                         <td>${t.pic || '-'}</td>
-                        <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+                        <td><span class="badge-status ${statusClass}">${t.status}</span></td>
                         <td><small>${t.createdByName || '-'}</small></td>
-                    </tr>
-                `;
+                    </tr>`;
             }).join('');
         }
 
         function updateChart() {
             const ctx = document.getElementById('financeChart').getContext('2d');
-            
             const monthlyData = {};
             allTransactions.forEach(t => {
                 const month = t.tanggal ? t.tanggal.substring(0, 7) : 'Unknown';
-                if (!monthlyData[month]) {
-                    monthlyData[month] = { income: 0, expense: 0 };
-                }
+                if (!monthlyData[month]) monthlyData[month] = { income: 0, expense: 0 };
                 monthlyData[month].income += t.income || 0;
                 monthlyData[month].expense += t.outcome || 0;
             });
-
             const labels = Object.keys(monthlyData).sort();
-            const incomeData = labels.map(m => monthlyData[m].income);
-            const expenseData = labels.map(m => monthlyData[m].expense);
-
-            if (financeChart) {
-                financeChart.destroy();
-            }
-
+            
+            if (financeChart) financeChart.destroy();
             financeChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
                     labels: labels.length > 0 ? labels : ['Belum ada data'],
                     datasets: [
-                        {
-                            label: 'Pemasukan',
-                            data: incomeData.length > 0 ? incomeData : [0],
-                            backgroundColor: 'rgba(76, 175, 80, 0.8)',
-                            borderColor: 'rgba(76, 175, 80, 1)',
-                            borderWidth: 1,
-                            borderRadius: 8
-                        },
-                        {
-                            label: 'Pengeluaran',
-                            data: expenseData.length > 0 ? expenseData : [0],
-                            backgroundColor: 'rgba(244, 67, 54, 0.8)',
-                            borderColor: 'rgba(244, 67, 54, 1)',
-                            borderWidth: 1,
-                            borderRadius: 8
-                        }
+                        { label: 'Pendapatan', data: labels.map(m => monthlyData[m].income), backgroundColor: 'rgba(46, 125, 50, 0.8)', borderRadius: 8 },
+                        { label: 'Beban', data: labels.map(m => monthlyData[m].expense), backgroundColor: 'rgba(216, 67, 21, 0.8)', borderRadius: 8 }
                     ]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function(value) {
-                                    return 'Rp ' + value.toLocaleString('id-ID');
-                                },
-                                font: {
-                                    family: "'Inter', sans-serif"
-                                }
-                            },
-                            grid: {
-                                color: 'rgba(0,0,0,0.05)'
-                            }
-                        },
-                        x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                font: {
-                                    family: "'Inter', sans-serif"
-                                }
-                            }
-                        }
-                    },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.dataset.label + ': Rp ' + context.parsed.y.toLocaleString('id-ID');
-                                }
-                            }
-                        }
-                    }
-                }
+                options: { responsive: true, scales: { y: { beginAtZero: true, ticks: { callback: v => 'Rp ' + v.toLocaleString('id-ID') } } } }
             });
         }
 
-        function filterStatus(status) {
-            if (status === 'all') {
-                updateTable(allTransactions);
-            } else {
-                const filtered = allTransactions.filter(t => t.status === status);
-                updateTable(filtered);
-            }
-        }
-
-        function formatRupiah(amount) {
-            return 'Rp ' + amount.toLocaleString('id-ID');
-        }
-
-        function formatDate(dateString) {
-            if (!dateString || dateString === '-') return '-';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('id-ID', { 
-                day: '2-digit', 
-                month: 'short', 
-                year: 'numeric' 
-            });
-        }
-
+        function filterStatus(status) { updateTable(status === 'all' ? allTransactions : allTransactions.filter(t => t.status === status)); }
+        function formatRupiah(amount) { return 'Rp ' + amount.toLocaleString('id-ID'); }
+        function formatDate(dateString) { if (!dateString || dateString === '-') return '-'; return new Date(dateString).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }); }
+        
         function showToast(message, type = 'info') {
             const container = document.getElementById('toastContainer');
-            const toastId = 'toast' + Date.now();
-            
-            const bgClass = type === 'success' ? 'bg-success' : 
-                           type === 'error' ? 'bg-danger' : 'bg-info';
-            
-            const html = `
-                <div id="${toastId}" class="toast align-items-center text-white ${bgClass} border-0" role="alert">
-                    <div class="d-flex">
-                        <div class="toast-body">${message}</div>
-                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                    </div>
-                </div>
-            `;
-            
-            container.insertAdjacentHTML('beforeend', html);
-            const toastElement = document.getElementById(toastId);
-            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
-            toast.show();
-            
-            toastElement.addEventListener('hidden.bs.toast', () => {
-                toastElement.remove();
-            });
+            const id = 'toast' + Date.now();
+            const bg = type === 'success' ? 'bg-success' : type === 'error' ? 'bg-danger' : 'bg-info';
+            container.insertAdjacentHTML('beforeend', `<div id="${id}" class="toast align-items-center text-white ${bg} border-0"><div class="d-flex"><div class="toast-body">${message}</div><button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>`);
+            const t = new bootstrap.Toast(document.getElementById(id), { delay: 3000 }); t.show();
+            document.getElementById(id).addEventListener('hidden.bs.toast', function() { this.remove(); });
         }
 
         document.getElementById('tanggal').valueAsDate = new Date();
     </script>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
