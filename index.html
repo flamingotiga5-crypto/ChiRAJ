@@ -33,7 +33,6 @@
             --color-equity: #6a1b9a;
             --color-revenue: #2e7d32;
             --color-expense: #d84315;
-            --color-investor: #8e24aa; /* Purple for Investor */
         }
         
         * { font-family: var(--font-main); }
@@ -336,15 +335,10 @@
                                 </select>
                             </div>
 
-                            <!-- NEW: Investor Selector (Hidden by default) -->
+                            <!-- NEW: Investor Input Text (Hidden by default) -->
                             <div class="mb-3 hidden" id="investorField">
                                 <label class="form-label">Nama Investor</label>
-                                <select class="form-select" id="investorName">
-                                    <option value="">Pilih Investor...</option>
-                                    <option value="Investor A">Investor A</option>
-                                    <option value="Investor B">Investor B</option>
-                                    <option value="Lainnya">Lainnya</option>
-                                </select>
+                                <input type="text" class="form-control" id="investorName" placeholder="Ketik nama investor...">
                             </div>
 
                             <div class="row mb-3">
